@@ -4,6 +4,7 @@ import (
 	"flag"
 )
 
+// config file
 var configFile = flag.String("c", "../configs/dev.yml", "set config file which viper will loading.")
 
 func main() {
