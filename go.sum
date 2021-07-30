@@ -241,10 +241,8 @@ github.com/googleapis/gax-go/v2 v2.0.4/go.mod h1:0Wqv26UfaUD9n4G6kQubkQ+KchISgw+
 github.com/googleapis/gax-go/v2 v2.0.5/go.mod h1:DWXyrwAJ9X0FpwwEdw+IPEYBICEFu5mhpdKc/us6bOk=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 h1:EGx4pi6eqNxGaHF6qqu48+N2wcFQ5qg5FXgOdqsJ5d8=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
-github.com/gorillazer/ginny v0.0.0-20210727025949-09b322a17e62 h1:LjlG2heRQkOHwjlTx9gsnGGG5SM4cUYOjYbeOrfvhoI=
-github.com/gorillazer/ginny v0.0.0-20210727025949-09b322a17e62/go.mod h1:C7P+ntCs55pyO62Ta9BekoINyomFCvRM+/uMuKCyXoU=
-github.com/gorillazer/ginny v0.0.0-20210728023050-667b9f45b57d h1:0b/zR35kTBcap6fBcygpAOmEl8VCSKkoKFFiomrxR7U=
-github.com/gorillazer/ginny v0.0.0-20210728023050-667b9f45b57d/go.mod h1:C7P+ntCs55pyO62Ta9BekoINyomFCvRM+/uMuKCyXoU=
+github.com/gorillazer/ginny v0.0.0-20210729062024-80e9ebc072de h1:LuP2n4kkv08mOiFMbpi+YTuh8CtXukq4kYkNYu8uQDo=
+github.com/gorillazer/ginny v0.0.0-20210729062024-80e9ebc072de/go.mod h1:C7P+ntCs55pyO62Ta9BekoINyomFCvRM+/uMuKCyXoU=
 github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 h1:+9834+KizmvFV7pXQGSXQTsaWhq2GjuNUt0aUU0YBYw=
 github.com/grpc-ecosystem/go-grpc-middleware v1.3.0/go.mod h1:z0ButlSOZa5vEBq9m2m2hlwIgKw+rp3sdCBRoJY+30Y=
 github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 h1:Ovs26xHkKqVztRpIrF/92BcuyuQ/YW4NSIpoGtfXNho=

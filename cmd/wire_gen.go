@@ -14,9 +14,6 @@ import (
 	"github.com/gorillazer/ginny/tracing/jaeger"
 	"github.com/gorillazer/ginny/transports/grpc"
 	"github.com/gorillazer/ginny/transports/http"
-	"github.com/pkg/errors"
-	"github.com/spf13/viper"
-	"go.uber.org/zap"
 	"moduleName/internal/handlers"
 	"moduleName/internal/services"
 )
@@ -24,20 +21,20 @@ import (
 // Injectors from provider.go:
 
 // CreateApp
-func CreateApp(cf string) (*ginny.Application, error) {
-	viper, err := config.New(cf)
+func CreateApp(name string) (*ginny.Application, error) {
+	viper, err := config.New(name)
 	if err != nil {
 		return nil, err
 	}
-	logOptions, err := log.NewOptions(viper)
+	options, err := log.NewOptions(viper)
 	if err != nil {
 		return nil, err
 	}
-	logger, err := log.New(logOptions)
+	logger, err := log.New(options)
 	if err != nil {
 		return nil, err
 	}
-	mainOptions, err := newOptions(viper, logger)
+	option, err := ginny.NewOption(viper, logger)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +66,11 @@ func CreateApp(cf string) (*ginny.Application, error) {
 	if err != nil {
 		return nil, err
 	}
-	application, err := newApp(mainOptions, logger, server)
+	v, err := newServe(server)
+	if err != nil {
+		return nil, err
+	}
+	application, err := ginny.NewApp(option, logger, v...)
 	if err != nil {
 		return nil, err
 	}
@@ -79,35 +80,14 @@ func CreateApp(cf string) (*ginny.Application, error) {
 // provider.go:
 
 // providerSet
-var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, consul.ProviderSet, jaeger.ProviderSet, http.ProviderSet, grpc.ProviderSet, handlers.ProviderSet, services.ProviderSet, appProviderSet)
+var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, consul.ProviderSet, jaeger.ProviderSet, http.ProviderSet, grpc.ProviderSet, handlers.ProviderSet, services.ProviderSet, appProvider)
 
-var appProviderSet = wire.NewSet(newApp, newOptions)
+var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
 
-// options
-type options struct {
-	Name string
-}
+// Create http/grpc Serve
+func newServe(
+	hs *http.Server,
 
-// newOptions
-func newOptions(v *viper.Viper, logger *zap.Logger) (*options, error) {
-	var err error
-	o := new(options)
-	if err = v.UnmarshalKey("app", o); err != nil {
-		return nil, errors.Wrap(err, "unmarshal app option error")
-	}
-
-	logger.Info("load application options success")
-
-	return o, err
-}
-
-// newApp
-func newApp(o *options, logger *zap.Logger, hs *http.Server) (*ginny.Application, error) {
-	a, err := ginny.New(o.Name, logger, ginny.HttpServerOption(hs))
-
-	if err != nil {
-		return nil, errors.Wrap(err, "new app error")
-	}
-
-	return a, nil
+) ([]ginny.Serve, error) {
+	return []ginny.Serve{ginny.HttpServe(hs)}, nil
 }
