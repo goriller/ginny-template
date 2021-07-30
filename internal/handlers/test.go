@@ -32,5 +32,5 @@ func NewTestHandler(logger *zap.Logger,
 func (t *TestHandler) Get(c *gin.Context) {
 	t.logger.Debug("TestHandler.Get", zap.Any("testService.GetInfo", t.testService.GetInfo()))
 
-	c.JSON(http.StatusOK, "p")
+	c.JSON(http.StatusOK, "hello")
 }
