@@ -11,10 +11,8 @@
             "mode": "auto",
             "program": "${workspaceFolder}/cmd",
             "env": {
-                "redis_target": "redis://:123456@9.135.12.51:6479/0",
-                "mongo_target": "mongodb://mongoadmin:123456@9.135.12.51:27017/test?authSource=admin",
-                "etcd_endpoint1": "9.135.12.51:2379",
-                "consul_addr": "9.135.12.51:8500",
+                "etcd_endpoint1": "127.0.0.1:2379",
+                "consul_addr": "127.0.0.1:8500",
             },
             "args": [
                 // "--conf","./internal/config/dev.yaml"
