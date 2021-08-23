@@ -6,6 +6,7 @@ import (
 	// "moduleName/internal/grpcservers"
 	"moduleName/internal/handlers"
 	"moduleName/internal/services"
+	"moduleName/internal/repositories"
 
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny"
@@ -27,6 +28,7 @@ var providerSet = wire.NewSet(
 	handlers.ProviderSet,
 	// grpcservers.ProviderSet,
 	services.ProviderSet,
+	repositories.ProviderSet,
 	appProvider,
 )
 

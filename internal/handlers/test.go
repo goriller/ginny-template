@@ -25,12 +25,18 @@ type TestHandler struct {
 func NewTestHandler(logger *zap.Logger,
 	testService *services.TestService) *TestHandler {
 	return &TestHandler{
-		logger: logger.With(zap.String("type", "TestHandler")),
+		logger:      logger.With(zap.String("type", "TestHandler")),
+		testService: testService,
 	}
 }
 
 func (t *TestHandler) Get(c *gin.Context) {
-	t.logger.Debug("TestHandler.Get", zap.Any("testService.GetInfo", t.testService.GetInfo()))
-
-	c.JSON(http.StatusOK, "hello")
+	t.logger.Debug("TestHandler.Get", zap.Any("TestHandler.Get", c.Params))
+	name, err := t.testService.GetInfo(c)
+	if err != nil {
+		t.logger.Error("TestHandler.Get", zap.Error(err))
+		c.JSON(http.StatusBadGateway, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, name)
 }

@@ -9,12 +9,14 @@ import (
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny"
 	"github.com/gorillazer/ginny/config"
+	"github.com/gorillazer/ginny/db/mysql"
 	"github.com/gorillazer/ginny/log"
 	"github.com/gorillazer/ginny/naming/consul"
 	"github.com/gorillazer/ginny/tracing/jaeger"
 	"github.com/gorillazer/ginny/transports/grpc"
 	"github.com/gorillazer/ginny/transports/http"
 	"moduleName/internal/handlers"
+	"moduleName/internal/repositories"
 	"moduleName/internal/services"
 )
 
@@ -42,7 +44,13 @@ func CreateApp(name string) (*ginny.Application, error) {
 	if err != nil {
 		return nil, err
 	}
-	testService := services.NewTestService()
+	mysqlConfig, err := mysql.NewConfig(viper, logger)
+	if err != nil {
+		return nil, err
+	}
+	sqlBuilder := mysql.NewSqlBuilder(mysqlConfig)
+	userRepository := repositories.NewUserRepository(sqlBuilder, logger)
+	testService := services.NewTestService(logger, userRepository)
 	testHandler := handlers.NewTestHandler(logger, testService)
 	initHandlers := handlers.CreateInitHandlerFn(testHandler)
 	configuration, err := jaeger.NewConfiguration(viper, logger)
@@ -80,7 +88,7 @@ func CreateApp(name string) (*ginny.Application, error) {
 // provider.go:
 
 // providerSet
-var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, consul.ProviderSet, jaeger.ProviderSet, http.ProviderSet, grpc.ProviderSet, handlers.ProviderSet, services.ProviderSet, appProvider)
+var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, consul.ProviderSet, jaeger.ProviderSet, http.ProviderSet, grpc.ProviderSet, handlers.ProviderSet, services.ProviderSet, repositories.ProviderSet, appProvider)
 
 var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
 

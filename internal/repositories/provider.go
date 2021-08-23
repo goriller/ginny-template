@@ -1,5 +1,11 @@
 package repositories
 
-import "github.com/google/wire"
+import (
+	"github.com/google/wire"
+	"github.com/gorillazer/ginny/db/mysql"
+)
 
-var ProviderSet = wire.NewSet(UserRepositoryProvider)
+var ProviderSet = wire.NewSet(
+	mysql.Provider,
+	UserRepositoryProvider,
+)
