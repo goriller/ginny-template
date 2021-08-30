@@ -3,7 +3,7 @@ package handlers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
-	"github.com/gorillazer/ginny/transports/http"
+	"github.com/gorillazer/ginny-serve/http"
 )
 
 func CreateInitHandlerFn(

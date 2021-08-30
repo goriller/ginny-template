@@ -2,7 +2,7 @@ package grpcservers
 
 import (
 	"github.com/google/wire"
-	"github.com/gorillazer/ginny/transports/grpc"
+	"github.com/gorillazer/ginny-serve/grpc"
 
 	stdgrpc "google.golang.org/grpc"
 )

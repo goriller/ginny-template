@@ -8,13 +8,11 @@ package main
 import (
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny"
-	"github.com/gorillazer/ginny/config"
-	"github.com/gorillazer/ginny/db/mysql"
-	"github.com/gorillazer/ginny/log"
-	"github.com/gorillazer/ginny/naming/consul"
-	"github.com/gorillazer/ginny/tracing/jaeger"
-	"github.com/gorillazer/ginny/transports/grpc"
-	"github.com/gorillazer/ginny/transports/http"
+	"github.com/gorillazer/ginny-config"
+	"github.com/gorillazer/ginny-jaeger"
+	"github.com/gorillazer/ginny-log"
+	"github.com/gorillazer/ginny-mysql"
+	"github.com/gorillazer/ginny-serve/http"
 	"moduleName/internal/handlers"
 	"moduleName/internal/repositories"
 	"moduleName/internal/services"
@@ -40,7 +38,15 @@ func CreateApp(name string) (*ginny.Application, error) {
 	if err != nil {
 		return nil, err
 	}
-	httpOptions, err := http.NewOptions(viper)
+	serverOption, err := http.NewOptions(viper)
+	if err != nil {
+		return nil, err
+	}
+	configuration, err := jaeger.NewConfiguration(viper, logger)
+	if err != nil {
+		return nil, err
+	}
+	tracer, err := jaeger.New(configuration)
 	if err != nil {
 		return nil, err
 	}
@@ -53,24 +59,8 @@ func CreateApp(name string) (*ginny.Application, error) {
 	testService := services.NewTestService(logger, userRepository)
 	testHandler := handlers.NewTestHandler(logger, testService)
 	initHandlers := handlers.CreateInitHandlerFn(testHandler)
-	configuration, err := jaeger.NewConfiguration(viper, logger)
-	if err != nil {
-		return nil, err
-	}
-	tracer, err := jaeger.New(configuration)
-	if err != nil {
-		return nil, err
-	}
-	engine := http.NewRouter(httpOptions, logger, initHandlers, tracer)
-	consulOptions, err := consul.NewOptions(viper)
-	if err != nil {
-		return nil, err
-	}
-	client, err := consul.New(consulOptions)
-	if err != nil {
-		return nil, err
-	}
-	server, err := http.New(httpOptions, logger, engine, client)
+	engine := http.NewRouter(serverOption, logger, tracer, initHandlers)
+	server, err := http.NewServer(serverOption, logger, engine)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +78,7 @@ func CreateApp(name string) (*ginny.Application, error) {
 // provider.go:
 
 // providerSet
-var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, consul.ProviderSet, jaeger.ProviderSet, http.ProviderSet, grpc.ProviderSet, handlers.ProviderSet, services.ProviderSet, repositories.ProviderSet, appProvider)
+var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, jaeger.ProviderSet, http.ProviderSet, handlers.ProviderSet, services.ProviderSet, repositories.ProviderSet, appProvider)
 
 var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
 

@@ -22,8 +22,10 @@ type TestHandler struct {
 }
 
 // NewTestHandler
-func NewTestHandler(logger *zap.Logger,
-	testService *services.TestService) *TestHandler {
+func NewTestHandler(
+	logger *zap.Logger,
+	testService *services.TestService,
+) *TestHandler {
 	return &TestHandler{
 		logger:      logger.With(zap.String("type", "TestHandler")),
 		testService: testService,
