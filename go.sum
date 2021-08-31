@@ -223,8 +223,8 @@ github.com/googleapis/gax-go/v2 v2.0.4/go.mod h1:0Wqv26UfaUD9n4G6kQubkQ+KchISgw+
 github.com/googleapis/gax-go/v2 v2.0.5/go.mod h1:DWXyrwAJ9X0FpwwEdw+IPEYBICEFu5mhpdKc/us6bOk=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 h1:EGx4pi6eqNxGaHF6qqu48+N2wcFQ5qg5FXgOdqsJ5d8=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
-github.com/gorillazer/ginny v0.0.7 h1:e3Xy0nUj+0FqyM6aG32YwPz4vj8rlLgtGlC7bGlrDGg=
-github.com/gorillazer/ginny v0.0.7/go.mod h1:f++lAWQXal3jaUhQg0UQkSJb1SfqyAufiwUP6gprZRQ=
+github.com/gorillazer/ginny v0.0.8 h1:tBp8QNu6Ut7TTR37+SiGure6l+BOkPsux0Eq8DK0V8g=
+github.com/gorillazer/ginny v0.0.8/go.mod h1:6jUsd1AHQPKGQDlyGh9T7mwaS62A5US3GBg6MaCH79E=
 github.com/gorillazer/ginny-config v0.0.1 h1:6zAVH/sGWOE4bPIxKLFaAnDBxvIbbab7N9yB1ghc+tc=
 github.com/gorillazer/ginny-config v0.0.1/go.mod h1:cDqbWmLA/N3ZKdW4O4srS0IF0ouP74daWkC7MjIUm84=
 github.com/gorillazer/ginny-consul v0.0.2 h1:gDux0ENvBsbtpMrZtcMwc2kZIp61HXi4+//xG4CsOsc=
@@ -237,7 +237,6 @@ github.com/gorillazer/ginny-mysql v0.0.0-20210830084414-f9ee1490fe2f h1:tUkRmIw/
 github.com/gorillazer/ginny-mysql v0.0.0-20210830084414-f9ee1490fe2f/go.mod h1:7PW64r5j8v75tBQLl9X+8nrXJanQUE6zIcNWG34NdXo=
 github.com/gorillazer/ginny-prometheus v0.0.1 h1:92S77jkU5Pv06k1jsD+FgSpmyYJUrVEtecunRQtvu0Y=
 github.com/gorillazer/ginny-prometheus v0.0.1/go.mod h1:4l1+0wBF3DDiW4FXdAiYpxbzaqv3E3yIHuZztVPHI/4=
-github.com/gorillazer/ginny-serve v0.0.7/go.mod h1:EaiFPGK0RbmvnIhJ+icTSNre9x+1EUsid+ZgMbm9bts=
 github.com/gorillazer/ginny-serve v0.0.10 h1:fuE/tmjN1nHSIykryMdFR1g8qlaUMQniBGfdL6+UbV0=
 github.com/gorillazer/ginny-serve v0.0.10/go.mod h1:SWxI4eswxVFFKQUa27+P+sCSMXHykwWnE7X/n7Omqqk=
 github.com/gorillazer/ginny-util v0.0.1 h1:lYNOLy9HSJD6v+76wT5bd+NX0fDJInsK0P7vOvLqsus=
@@ -879,7 +878,6 @@ gopkg.in/errgo.v2 v2.1.0/go.mod h1:hNsd1EY+bozCKY1Ytp96fpM3vjJbqLJn88ws8XvfDNI=
 gopkg.in/fsnotify.v1 v1.4.7/go.mod h1:Tz8NjZHkW78fSQdbUxIjBTcgA1z1m8ZHf0WmKUhAMys=
 gopkg.in/go-playground/assert.v1 v1.2.1 h1:xoYuJVE7KT85PYWrN730RguIQO0ePzVRfFMXadIrXTM=
 gopkg.in/go-playground/assert.v1 v1.2.1/go.mod h1:9RXL0bg/zibRAgZUYszZSwO/z8Y/a8bDuhia5mkpMnE=
-gopkg.in/go-playground/validator.v8 v8.18.2 h1:lFB4DoMU6B626w8ny76MV7VX6W2VHct2GVOI3xgiMrQ=
 gopkg.in/go-playground/validator.v8 v8.18.2/go.mod h1:RX2a/7Ha8BgOhfk7j780h4/u/RRjR0eouCJSH80/M2Y=
 gopkg.in/go-playground/validator.v9 v9.29.1/go.mod h1:+c9/zcJMFNgbLvly1L1V+PpxWdVbfP1avr/N00E2vyQ=
 gopkg.in/ini.v1 v1.62.0 h1:duBzk771uxoUuOlyRLkHsygud9+5lrlGjdFBb4mSKDU=
