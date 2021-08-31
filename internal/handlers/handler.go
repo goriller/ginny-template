@@ -11,6 +11,7 @@ func CreateInitHandlerFn(
 ) http.InitHandlers {
 	return func(r *gin.Engine) {
 		r.GET("/test/:id", test.Get)
+		r.GET("/test1/:id", test.GetRPC)
 	}
 }
 

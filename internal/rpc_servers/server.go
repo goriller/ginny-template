@@ -1,6 +1,8 @@
-package grpcservers
+package rpc_servers
 
 import (
+	"moduleName/api/proto"
+
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny-serve/grpc"
 
@@ -11,7 +13,7 @@ func CreateInitServerFn(
 	ps *DetailsServer,
 ) grpc.InitServers {
 	return func(s *stdgrpc.Server) {
-		// proto.RegisterDetailsServer(s, ps)
+		proto.RegisterDetailsServer(s, ps)
 	}
 }
 
