@@ -10,8 +10,8 @@ run: tidy proto wire
 tidy:
 	go mod tidy
 #-------------------------------------	
-.PHONY: tidy wire
-wire:
+.PHONY: wire
+wire: tidy
 	wire ./...
 #-------------------------------------	
 .PHONY: test

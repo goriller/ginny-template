@@ -1,5 +1,10 @@
 app:
   name: ginny-template
+config:
+  provider: #remote config provider: etcd、consul
+  endpoint:
+  path:
+  types: json
 http:
   mode: release
   host: 127.0.0.1
