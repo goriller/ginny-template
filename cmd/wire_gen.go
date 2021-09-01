@@ -6,6 +6,11 @@
 package main
 
 import (
+	"MODULE_NAME/internal/handlers"
+	"MODULE_NAME/internal/repositories"
+	"MODULE_NAME/internal/rpc_clients"
+	"MODULE_NAME/internal/rpc_servers"
+	"MODULE_NAME/internal/services"
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny"
 	"github.com/gorillazer/ginny-config"
@@ -15,11 +20,6 @@ import (
 	"github.com/gorillazer/ginny-mysql"
 	"github.com/gorillazer/ginny-serve/grpc"
 	"github.com/gorillazer/ginny-serve/http"
-	"moduleName/internal/handlers"
-	"moduleName/internal/repositories"
-	"moduleName/internal/rpc_clients"
-	"moduleName/internal/rpc_servers"
-	"moduleName/internal/services"
 )
 
 // Injectors from provider.go:

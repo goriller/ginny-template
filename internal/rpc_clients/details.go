@@ -1,7 +1,7 @@
 package rpc_clients
 
 import (
-	"moduleName/api/proto"
+	"MODULE_NAME/api/proto"
 
 	consul "github.com/gorillazer/ginny-consul"
 	"github.com/gorillazer/ginny-serve/grpc"

@@ -1,9 +1,9 @@
 package rpc_servers
 
 import (
+	"MODULE_NAME/api/proto"
+	"MODULE_NAME/internal/services"
 	"context"
-	"moduleName/api/proto"
-	"moduleName/internal/services"
 	"time"
 
 	"github.com/google/wire"

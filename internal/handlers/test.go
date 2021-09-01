@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"moduleName/api/proto"
-	"moduleName/configs"
-	"moduleName/internal/services"
+	"MODULE_NAME/api/proto"
+	"MODULE_NAME/configs"
+	"MODULE_NAME/internal/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"

@@ -1,5 +1,5 @@
 # 发布时根据情况修改
-APP = ginny-template
+APP = APP_NAME
 CONF = dev.yaml
 #-------------------------------------	
 .PHONY: run
@@ -16,7 +16,7 @@ wire: tidy
 #-------------------------------------	
 .PHONY: test
 test: tidy mock
-	go test -v ./internal/app/$(APP)/... -f `pwd`/configs/$(CONF) -covermode=count -coverprofile=dist/cover-$(APP).out
+	go test -v ./internal/... -f `pwd`/configs/$(CONF) -covermode=count -coverprofile=dist/cover-$(APP).out
 #-------------------------------------	
 .PHONY: build
 build: tidy

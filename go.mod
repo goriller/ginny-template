@@ -1,4 +1,4 @@
-module moduleName
+module MODULE_NAME
 
 go 1.16
 

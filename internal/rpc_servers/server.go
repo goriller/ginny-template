@@ -1,7 +1,7 @@
 package rpc_servers
 
 import (
-	"moduleName/api/proto"
+	"MODULE_NAME/api/proto"
 
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny-serve/grpc"

@@ -1,8 +1,8 @@
 package services
 
 import (
+	"MODULE_NAME/internal/repositories"
 	"context"
-	"moduleName/internal/repositories"
 
 	"github.com/google/wire"
 	"go.uber.org/zap"
