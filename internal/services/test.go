@@ -1,8 +1,8 @@
 package services
 
 import (
+	"MODULE_NAME/internal/repositories"
 	"context"
-	"moduleName/internal/repositories"
 
 	"github.com/google/wire"
 	"go.uber.org/zap"
@@ -12,7 +12,10 @@ import (
 var TestServiceProvider = wire.NewSet(NewTestService, wire.Bind(new(ITestService), new(*TestService)))
 
 // ITestService
-type ITestService interface{}
+type ITestService interface {
+	Get(ctx context.Context, Id uint64) (string, error)
+	GetInfo(ctx context.Context) (string, error)
+}
 
 // TestService
 type TestService struct {
@@ -27,6 +30,11 @@ func NewTestService(logger *zap.Logger,
 		logger:         logger,
 		userRepository: userRepository,
 	}
+}
+
+// Get
+func (p *TestService) Get(ctx context.Context, Id uint64) (string, error) {
+	return "user.Name", nil
 }
 
 // GetInfo

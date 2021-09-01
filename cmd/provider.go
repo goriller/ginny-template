@@ -3,30 +3,34 @@
 package main
 
 import (
-	// "moduleName/internal/grpcservers"
-	"moduleName/internal/handlers"
-	"moduleName/internal/services"
-	"moduleName/internal/repositories"
+	"MODULE_NAME/internal/handlers"
+	"MODULE_NAME/internal/repositories"
+	"MODULE_NAME/internal/rpc_clients"
+	"MODULE_NAME/internal/rpc_servers"
+	"MODULE_NAME/internal/services"
 
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny"
-	"github.com/gorillazer/ginny/config"
-	"github.com/gorillazer/ginny/log"
-	"github.com/gorillazer/ginny/naming/consul"
-	"github.com/gorillazer/ginny/tracing/jaeger"
-	"github.com/gorillazer/ginny/transports/grpc"
-	"github.com/gorillazer/ginny/transports/http"
+	config "github.com/gorillazer/ginny-config"
+	jaeger "github.com/gorillazer/ginny-jaeger"
+	log "github.com/gorillazer/ginny-log"
+
+	consul "github.com/gorillazer/ginny-consul"
+	grpc "github.com/gorillazer/ginny-serve/grpc"
+	http "github.com/gorillazer/ginny-serve/http"
 )
 
 // providerSet
 var providerSet = wire.NewSet(
 	log.ProviderSet,
 	config.ProviderSet,
-	consul.ProviderSet,
 	jaeger.ProviderSet,
-	http.ProviderSet, grpc.ProviderSet,
+	http.ProviderSet,
+	grpc.ProviderSet,
 	handlers.ProviderSet,
-	// grpcservers.ProviderSet,
+	consul.ProviderSet,
+	rpc_servers.ProviderSet,
+	rpc_clients.ProviderSet,
 	services.ProviderSet,
 	repositories.ProviderSet,
 	appProvider,
@@ -37,11 +41,12 @@ var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
 // Create http/grpc Serve
 func newServe(
 	hs *http.Server,
-	// gs *grpc.Server,
+	cli *consul.Client,
+	gs *grpc.Server,
 ) ([]ginny.Serve, error) {
 	return []ginny.Serve{
 		ginny.HttpServe(hs),
-		// ginny.GrpcServe(gs),
+		ginny.GrpcServeWithConsul(gs, cli),
 	}, nil
 }
 

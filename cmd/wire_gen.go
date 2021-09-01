@@ -6,18 +6,20 @@
 package main
 
 import (
+	"MODULE_NAME/internal/handlers"
+	"MODULE_NAME/internal/repositories"
+	"MODULE_NAME/internal/rpc_clients"
+	"MODULE_NAME/internal/rpc_servers"
+	"MODULE_NAME/internal/services"
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny"
-	"github.com/gorillazer/ginny/config"
-	"github.com/gorillazer/ginny/db/mysql"
-	"github.com/gorillazer/ginny/log"
-	"github.com/gorillazer/ginny/naming/consul"
-	"github.com/gorillazer/ginny/tracing/jaeger"
-	"github.com/gorillazer/ginny/transports/grpc"
-	"github.com/gorillazer/ginny/transports/http"
-	"moduleName/internal/handlers"
-	"moduleName/internal/repositories"
-	"moduleName/internal/services"
+	"github.com/gorillazer/ginny-config"
+	"github.com/gorillazer/ginny-consul"
+	"github.com/gorillazer/ginny-jaeger"
+	"github.com/gorillazer/ginny-log"
+	"github.com/gorillazer/ginny-mysql"
+	"github.com/gorillazer/ginny-serve/grpc"
+	"github.com/gorillazer/ginny-serve/http"
 )
 
 // Injectors from provider.go:
@@ -40,19 +42,10 @@ func CreateApp(name string) (*ginny.Application, error) {
 	if err != nil {
 		return nil, err
 	}
-	httpOptions, err := http.NewOptions(viper)
+	serverOption, err := http.NewOptions(viper)
 	if err != nil {
 		return nil, err
 	}
-	mysqlConfig, err := mysql.NewConfig(viper, logger)
-	if err != nil {
-		return nil, err
-	}
-	sqlBuilder := mysql.NewSqlBuilder(mysqlConfig)
-	userRepository := repositories.NewUserRepository(sqlBuilder, logger)
-	testService := services.NewTestService(logger, userRepository)
-	testHandler := handlers.NewTestHandler(logger, testService)
-	initHandlers := handlers.CreateInitHandlerFn(testHandler)
 	configuration, err := jaeger.NewConfiguration(viper, logger)
 	if err != nil {
 		return nil, err
@@ -61,20 +54,54 @@ func CreateApp(name string) (*ginny.Application, error) {
 	if err != nil {
 		return nil, err
 	}
-	engine := http.NewRouter(httpOptions, logger, initHandlers, tracer)
-	consulOptions, err := consul.NewOptions(viper)
+	mysqlConfig, err := mysql.NewConfig(viper)
 	if err != nil {
 		return nil, err
 	}
-	client, err := consul.New(consulOptions)
+	sqlBuilder := mysql.NewSqlBuilder(mysqlConfig, logger)
+	userRepository := repositories.NewUserRepository(sqlBuilder, logger)
+	testService := services.NewTestService(logger, userRepository)
+	clientOptions, err := grpc.NewClientOptions(viper)
 	if err != nil {
 		return nil, err
 	}
-	server, err := http.New(httpOptions, logger, engine, client)
+	client, err := grpc.NewClient(clientOptions, tracer)
 	if err != nil {
 		return nil, err
 	}
-	v, err := newServe(server)
+	apiConfig, err := consul.NewOptions(viper)
+	if err != nil {
+		return nil, err
+	}
+	consulClient, err := consul.New(apiConfig, logger)
+	if err != nil {
+		return nil, err
+	}
+	detailsClient, err := rpc_clients.NewDetailsClient(client, consulClient)
+	if err != nil {
+		return nil, err
+	}
+	testHandler := handlers.NewTestHandler(viper, logger, testService, detailsClient)
+	initHandlers := handlers.CreateInitHandlerFn(testHandler)
+	engine := http.NewRouter(serverOption, logger, tracer, initHandlers)
+	server, err := http.NewServer(serverOption, logger, engine)
+	if err != nil {
+		return nil, err
+	}
+	grpcServerOption, err := grpc.NewOptions(viper)
+	if err != nil {
+		return nil, err
+	}
+	detailsServer, err := rpc_servers.NewDetailsServer(logger, testService)
+	if err != nil {
+		return nil, err
+	}
+	initServers := rpc_servers.CreateInitServerFn(detailsServer)
+	grpcServer, err := grpc.NewServer(grpcServerOption, logger, tracer, initServers)
+	if err != nil {
+		return nil, err
+	}
+	v, err := newServe(server, consulClient, grpcServer)
 	if err != nil {
 		return nil, err
 	}
@@ -88,14 +115,15 @@ func CreateApp(name string) (*ginny.Application, error) {
 // provider.go:
 
 // providerSet
-var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, consul.ProviderSet, jaeger.ProviderSet, http.ProviderSet, grpc.ProviderSet, handlers.ProviderSet, services.ProviderSet, repositories.ProviderSet, appProvider)
+var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, jaeger.ProviderSet, http.ProviderSet, grpc.ProviderSet, handlers.ProviderSet, consul.ProviderSet, rpc_servers.ProviderSet, rpc_clients.ProviderSet, services.ProviderSet, repositories.ProviderSet, appProvider)
 
 var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
 
 // Create http/grpc Serve
 func newServe(
 	hs *http.Server,
-
+	cli *consul.Client,
+	gs *grpc.Server,
 ) ([]ginny.Serve, error) {
-	return []ginny.Serve{ginny.HttpServe(hs)}, nil
+	return []ginny.Serve{ginny.HttpServe(hs), ginny.GrpcServeWithConsul(gs, cli)}, nil
 }

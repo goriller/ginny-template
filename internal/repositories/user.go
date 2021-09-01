@@ -4,13 +4,15 @@ import (
 	"context"
 
 	"github.com/google/wire"
-	"github.com/gorillazer/ginny/db/mysql"
+	mysql "github.com/gorillazer/ginny-mysql"
 	"go.uber.org/zap"
 )
 
 var UserRepositoryProvider = wire.NewSet(NewUserRepository, wire.Bind(new(IUserRepository), new(*UserRepository)))
 
-type IUserRepository interface{}
+type IUserRepository interface {
+	GetUser(ctx context.Context) (*UserRepository, error)
+}
 type UserRepository struct {
 	Id   string `json:"id" bson:"_id"`
 	Name string `json:"name" bson:"name"`
