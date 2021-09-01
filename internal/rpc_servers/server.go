@@ -5,18 +5,19 @@ import (
 
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny-serve/grpc"
-
-	stdgrpc "google.golang.org/grpc"
+	stdGrpc "google.golang.org/grpc"
 )
 
+// CreateInitServerFn
 func CreateInitServerFn(
-	ps *DetailsServer,
+	d *DetailsServer,
 ) grpc.InitServers {
-	return func(s *stdgrpc.Server) {
-		proto.RegisterDetailsServer(s, ps)
+	return func(s *stdGrpc.Server) {
+		proto.RegisterDetailsServer(s, d)
 	}
 }
 
+// ProviderSet
 var ProviderSet = wire.NewSet(
 	NewDetailsServer,
 	CreateInitServerFn,

@@ -2,11 +2,13 @@ package handlers
 
 import (
 	"moduleName/api/proto"
+	"moduleName/configs"
 	"moduleName/internal/services"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
+	"github.com/gorillazer/ginny/errs"
+	"github.com/gorillazer/ginny/res"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
@@ -16,8 +18,8 @@ var TestHandlerProvider = wire.NewSet(NewTestHandler, wire.Bind(new(ITestHandler
 
 // ITestHandler
 type ITestHandler interface {
-	Get(c *gin.Context)
-	GetRPC(c *gin.Context)
+	Get(c *gin.Context) (*res.Response, error)
+	GetRPC(c *gin.Context) (*res.Response, error)
 }
 
 // TestHandler
@@ -43,18 +45,17 @@ func NewTestHandler(
 	}
 }
 
-func (t *TestHandler) Get(c *gin.Context) {
+func (t *TestHandler) Get(c *gin.Context) (*res.Response, error) {
 	t.logger.Debug("TestHandler.Get", zap.Any("TestHandler.Get", c.Params))
 	name, err := t.testService.GetInfo(c)
 	if err != nil {
 		t.logger.Error("TestHandler.Get", zap.Error(err))
-		c.JSON(http.StatusBadGateway, err.Error())
-		return
+		return nil, errs.New(configs.ERR_GETINFO, configs.GetErrMsg(configs.ERR_GETINFO))
 	}
-	c.JSON(http.StatusOK, name)
+	return res.Success(name), nil
 }
 
-func (t *TestHandler) GetRPC(c *gin.Context) {
+func (t *TestHandler) GetRPC(c *gin.Context) (*res.Response, error) {
 	req := &proto.GetDetailRequest{
 		Id: 1,
 	}
@@ -62,8 +63,7 @@ func (t *TestHandler) GetRPC(c *gin.Context) {
 	p, err := t.detailClient.Get(c, req)
 	if err != nil {
 		t.logger.Error("TestHandler.GetRPC", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, err.Error())
-		return
+		return res.Fail(errs.New(configs.ERR_GETINFO, configs.GetErrMsg(configs.ERR_GETINFO))), nil
 	}
-	c.JSON(http.StatusOK, p.Name)
+	return res.Success(p.Name), nil
 }

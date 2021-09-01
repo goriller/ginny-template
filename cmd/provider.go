@@ -46,7 +46,6 @@ func newServe(
 ) ([]ginny.Serve, error) {
 	return []ginny.Serve{
 		ginny.HttpServe(hs),
-		// ginny.GrpcServe(gs),
 		ginny.GrpcServeWithConsul(gs, cli),
 	}, nil
 }
