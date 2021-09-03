@@ -221,8 +221,8 @@ github.com/googleapis/gax-go/v2 v2.0.4/go.mod h1:0Wqv26UfaUD9n4G6kQubkQ+KchISgw+
 github.com/googleapis/gax-go/v2 v2.0.5/go.mod h1:DWXyrwAJ9X0FpwwEdw+IPEYBICEFu5mhpdKc/us6bOk=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 h1:EGx4pi6eqNxGaHF6qqu48+N2wcFQ5qg5FXgOdqsJ5d8=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
-github.com/gorillazer/ginny v0.1.0 h1:4+L8BFARnAZArN3ZwLJ4KuKwcysXi0OCuof13n/fhkM=
-github.com/gorillazer/ginny v0.1.0/go.mod h1:dEwtuMFs8vGokXHt0EGmXy2IH8r8GPsTFtLngw9B8kc=
+github.com/gorillazer/ginny v0.1.1 h1:zSv7ZxpdAUMa2KhL54wOUQkguG7XD0CjdbKwESbvJZE=
+github.com/gorillazer/ginny v0.1.1/go.mod h1:qO+DD60QPfSkUMsgxEuX8NS/jaVJJqHa4EFdkPIuF8k=
 github.com/gorillazer/ginny-config v0.0.2 h1:c+MZK9GSqZLf6XwIWLJI179+ihcY1qR960EkMklhaBk=
 github.com/gorillazer/ginny-config v0.0.2/go.mod h1:cDqbWmLA/N3ZKdW4O4srS0IF0ouP74daWkC7MjIUm84=
 github.com/gorillazer/ginny-consul v0.0.2 h1:gDux0ENvBsbtpMrZtcMwc2kZIp61HXi4+//xG4CsOsc=
@@ -235,9 +235,8 @@ github.com/gorillazer/ginny-mysql v0.0.0-20210830084414-f9ee1490fe2f h1:tUkRmIw/
 github.com/gorillazer/ginny-mysql v0.0.0-20210830084414-f9ee1490fe2f/go.mod h1:7PW64r5j8v75tBQLl9X+8nrXJanQUE6zIcNWG34NdXo=
 github.com/gorillazer/ginny-prometheus v0.0.1 h1:92S77jkU5Pv06k1jsD+FgSpmyYJUrVEtecunRQtvu0Y=
 github.com/gorillazer/ginny-prometheus v0.0.1/go.mod h1:4l1+0wBF3DDiW4FXdAiYpxbzaqv3E3yIHuZztVPHI/4=
-github.com/gorillazer/ginny-serve v0.0.10/go.mod h1:SWxI4eswxVFFKQUa27+P+sCSMXHykwWnE7X/n7Omqqk=
-github.com/gorillazer/ginny-serve v0.0.11 h1:BcXigQ4spTlodFbOjVZGe5sMQabXF4mh8PCY1Clqp8k=
-github.com/gorillazer/ginny-serve v0.0.11/go.mod h1:EaiFPGK0RbmvnIhJ+icTSNre9x+1EUsid+ZgMbm9bts=
+github.com/gorillazer/ginny-serve v0.0.12 h1:wLxRct8IAH/EjLHYN4CGfKs3/PccqChIte3ydErb5mI=
+github.com/gorillazer/ginny-serve v0.0.12/go.mod h1:EaiFPGK0RbmvnIhJ+icTSNre9x+1EUsid+ZgMbm9bts=
 github.com/gorillazer/ginny-util v0.0.1/go.mod h1:MQU8JX+8HitAlpAxnY2PeTd0KBj3CgFO3eYwb9QQZQ0=
 github.com/gorillazer/ginny-util v0.0.3 h1:7lbcVcvUdAKfW/+j3wKokY9epo++AjQsf1f96yJ+gVM=
 github.com/gorillazer/ginny-util v0.0.3/go.mod h1:PwTiNR3YE0F5PJ5TBQzezErNJ1BMiWzJC3lBycxUSKA=
