@@ -35,10 +35,16 @@ mock:
 lint:
 	golint ./...
 #-------------------------------------	
+# fetches this repo into $GOPATH
+# go install github.com/envoyproxy/protoc-gen-validate@latest
+# go install github.com/golang/protobuf/protoc-gen-go@latest
 .PHONY: proto
 proto:
-    # 遇到错误： "--go_out: protoc-gen-go: plugins are not supported; use 'protoc --go-grpc_out=...' to generate gRPC" 解决：go install github.com/golang/protobuf/protoc-gen-go@latest
-	protoc -I api/proto ./api/proto/* --go_out=plugins=grpc:api/proto
+	protoc \
+  -I api/proto \
+  --go_out="plugins=grpc:api/proto" \
+  --validate_out="lang=go:api/proto" \
+  ./api/proto/*.proto
 #-------------------------------------	
 .PHONY: docker
 docker-compose: build dash rules
