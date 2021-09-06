@@ -27,14 +27,16 @@ func newServe(
 	}, nil
 }
 
-var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
+// appProvider
+var appProvider = wire.NewSet(
+	log.ProviderSet,
+	config.ProviderSet,
+	jaeger.ProviderSet,
+	newServe, ginny.AppProviderSet)
 
 // CreateApp
 func CreateApp(name string) (*ginny.Application, error) {
 	panic(wire.Build(wire.NewSet(
-		log.ProviderSet,
-		config.ProviderSet,
-		jaeger.ProviderSet,
 		handlers.ProviderSet,
 		// CMD_PROVIDERSET 锚点请勿删除! Do not delete this line!
 
