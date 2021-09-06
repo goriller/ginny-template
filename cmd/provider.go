@@ -14,19 +14,6 @@ import (
 	http "github.com/gorillazer/ginny-serve/http"
 )
 
-// providerSet
-var providerSet = wire.NewSet(
-	log.ProviderSet,
-	config.ProviderSet,
-	jaeger.ProviderSet,
-	handlers.ProviderSet,
-	// CMD_PROVIDERSET 锚点请勿删除! Do not delete this line!
-
-	appProvider,
-)
-
-var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
-
 // Create http/grpc Serve
 func newServe(
 	hs *http.Server,
@@ -40,7 +27,17 @@ func newServe(
 	}, nil
 }
 
+var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
+
 // CreateApp
 func CreateApp(name string) (*ginny.Application, error) {
-	panic(wire.Build(providerSet))
+	panic(wire.Build(wire.NewSet(
+		log.ProviderSet,
+		config.ProviderSet,
+		jaeger.ProviderSet,
+		handlers.ProviderSet,
+		// CMD_PROVIDERSET 锚点请勿删除! Do not delete this line!
+
+		appProvider,
+	)))
 }
