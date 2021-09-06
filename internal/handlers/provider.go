@@ -17,6 +17,7 @@ func CreateInitHandlerFn(
 }
 
 var ProviderSet = wire.NewSet(
+	http.ProviderSet,
 	// HANDLE_PROVIDER 锚点请勿删除! Do not delete this line!
 	CreateInitHandlerFn,
 )

@@ -67,7 +67,7 @@ func CreateApp(name string) (*ginny.Application, error) {
 // provider.go:
 
 // providerSet
-var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, jaeger.ProviderSet, http.ProviderSet, handlers.ProviderSet, appProvider)
+var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, jaeger.ProviderSet, handlers.ProviderSet, appProvider)
 
 var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
 
