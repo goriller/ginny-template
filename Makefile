@@ -50,3 +50,6 @@ proto:
 docker-compose: build dash rules
 	docker-compose -f build/docker-compose.yml up --build -d
 all: lint cover docker
+
+# How to run "make" command in gitbash in windows?
+# https://gist.github.com/evanwill/0207876c3243bbb6863e65ec5dc3f058
