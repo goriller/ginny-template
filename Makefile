@@ -48,7 +48,7 @@ proto:
 #-------------------------------------	
 .PHONY: docker
 docker-compose: build dash rules
-	docker-compose -f build/docker-compose.yml up --build -d
+	docker-compose -f deploy/docker-compose.yml up --build -d
 all: lint cover docker
 
 # How to run "make" command in gitbash in windows?
