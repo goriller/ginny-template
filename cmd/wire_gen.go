@@ -8,8 +8,8 @@ package main
 import (
 	"MODULE_NAME/internal/handlers"
 	"MODULE_NAME/internal/repositories"
-	"MODULE_NAME/internal/rpc_clients"
-	"MODULE_NAME/internal/rpc_servers"
+	"MODULE_NAME/internal/rpc/client"
+	"MODULE_NAME/internal/rpc/server"
 	"MODULE_NAME/internal/services"
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny"
@@ -65,7 +65,7 @@ func CreateApp(name string) (*ginny.Application, error) {
 	if err != nil {
 		return nil, err
 	}
-	client, err := grpc.NewClient(clientOptions, tracer)
+	grpcClient, err := grpc.NewClient(clientOptions, tracer)
 	if err != nil {
 		return nil, err
 	}
@@ -77,14 +77,14 @@ func CreateApp(name string) (*ginny.Application, error) {
 	if err != nil {
 		return nil, err
 	}
-	detailsClient, err := rpc_clients.NewDetailsClient(client, consulClient)
+	detailsClient, err := client.NewDetailsClient(grpcClient, consulClient)
 	if err != nil {
 		return nil, err
 	}
 	testHandler := handlers.NewTestHandler(viper, logger, testService, detailsClient)
 	initHandlers := handlers.CreateInitHandlerFn(testHandler)
 	engine := http.NewRouter(serverOption, logger, tracer, initHandlers)
-	server, err := http.NewServer(serverOption, logger, engine)
+	httpServer, err := http.NewServer(serverOption, logger, engine)
 	if err != nil {
 		return nil, err
 	}
@@ -92,16 +92,16 @@ func CreateApp(name string) (*ginny.Application, error) {
 	if err != nil {
 		return nil, err
 	}
-	detailsServer, err := rpc_servers.NewDetailsServer(logger, testService)
+	detailsServer, err := server.NewDetailsServer(logger, testService)
 	if err != nil {
 		return nil, err
 	}
-	initServers := rpc_servers.CreateInitServerFn(detailsServer)
+	initServers := server.CreateInitServerFn(detailsServer)
 	grpcServer, err := grpc.NewServer(grpcServerOption, logger, tracer, initServers)
 	if err != nil {
 		return nil, err
 	}
-	v, err := newServe(server, consulClient, grpcServer)
+	v, err := newServe(httpServer, consulClient, grpcServer)
 	if err != nil {
 		return nil, err
 	}
@@ -113,9 +113,6 @@ func CreateApp(name string) (*ginny.Application, error) {
 }
 
 // provider.go:
-
-// providerSet
-var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, jaeger.ProviderSet, http.ProviderSet, grpc.ProviderSet, handlers.ProviderSet, consul.ProviderSet, rpc_servers.ProviderSet, rpc_clients.ProviderSet, services.ProviderSet, repositories.ProviderSet, appProvider)
 
 var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
 

@@ -5,8 +5,9 @@ package main
 import (
 	"MODULE_NAME/internal/handlers"
 	"MODULE_NAME/internal/repositories"
-	"MODULE_NAME/internal/rpc_clients"
-	"MODULE_NAME/internal/rpc_servers"
+	rpc "MODULE_NAME/internal/rpc"
+	rpc_client "MODULE_NAME/internal/rpc/client"
+	rpc_server "MODULE_NAME/internal/rpc/server"
 	"MODULE_NAME/internal/services"
 
 	"github.com/google/wire"
@@ -18,22 +19,6 @@ import (
 	consul "github.com/gorillazer/ginny-consul"
 	grpc "github.com/gorillazer/ginny-serve/grpc"
 	http "github.com/gorillazer/ginny-serve/http"
-)
-
-// providerSet
-var providerSet = wire.NewSet(
-	log.ProviderSet,
-	config.ProviderSet,
-	jaeger.ProviderSet,
-	http.ProviderSet,
-	grpc.ProviderSet,
-	handlers.ProviderSet,
-	consul.ProviderSet,
-	rpc_servers.ProviderSet,
-	rpc_clients.ProviderSet,
-	services.ProviderSet,
-	repositories.ProviderSet,
-	appProvider,
 )
 
 var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
@@ -52,5 +37,19 @@ func newServe(
 
 // CreateApp
 func CreateApp(name string) (*ginny.Application, error) {
-	panic(wire.Build(providerSet))
+	panic(wire.Build(wire.NewSet(
+		log.ProviderSet,
+		config.ProviderSet,
+		jaeger.ProviderSet,
+
+		handlers.ProviderSet,
+		// grpc
+		rpc.ProviderSet,
+		rpc_server.ProviderSet,
+		rpc_client.ProviderSet,
+
+		services.ProviderSet,
+		repositories.ProviderSet,
+		appProvider,
+	)))
 }

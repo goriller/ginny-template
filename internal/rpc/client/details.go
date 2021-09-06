@@ -1,4 +1,4 @@
-package rpc_clients
+package client
 
 import (
 	"MODULE_NAME/api/proto"

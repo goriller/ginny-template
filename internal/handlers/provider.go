@@ -17,6 +17,7 @@ func CreateInitHandlerFn(
 }
 
 var ProviderSet = wire.NewSet(
+	http.ProviderSet,
 	TestHandlerProvider,
 	CreateInitHandlerFn,
 )

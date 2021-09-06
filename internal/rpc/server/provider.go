@@ -1,4 +1,4 @@
-package rpc_servers
+package server
 
 import (
 	"MODULE_NAME/api/proto"
@@ -19,6 +19,7 @@ func CreateInitServerFn(
 
 // ProviderSet
 var ProviderSet = wire.NewSet(
+
 	NewDetailsServer,
 	CreateInitServerFn,
 )
