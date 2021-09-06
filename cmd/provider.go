@@ -4,19 +4,15 @@ package main
 
 import (
 	"MODULE_NAME/internal/handlers"
-	"MODULE_NAME/internal/repositories"
-	"MODULE_NAME/internal/rpc_clients"
-	"MODULE_NAME/internal/rpc_servers"
-	"MODULE_NAME/internal/services"
+	// CMD_IMPORT 锚点请勿删除! Do not delete this line!
 
 	"github.com/google/wire"
 	"github.com/gorillazer/ginny"
 	config "github.com/gorillazer/ginny-config"
+	// consul "github.com/gorillazer/ginny-consul"
 	jaeger "github.com/gorillazer/ginny-jaeger"
 	log "github.com/gorillazer/ginny-log"
-
-	consul "github.com/gorillazer/ginny-consul"
-	grpc "github.com/gorillazer/ginny-serve/grpc"
+	// grpc "github.com/gorillazer/ginny-serve/grpc"
 	http "github.com/gorillazer/ginny-serve/http"
 )
 
@@ -26,13 +22,15 @@ var providerSet = wire.NewSet(
 	config.ProviderSet,
 	jaeger.ProviderSet,
 	http.ProviderSet,
-	grpc.ProviderSet,
 	handlers.ProviderSet,
-	consul.ProviderSet,
-	rpc_servers.ProviderSet,
-	rpc_clients.ProviderSet,
-	services.ProviderSet,
-	repositories.ProviderSet,
+	// CMD_PROVIDERSET 锚点请勿删除! Do not delete this line!
+
+	// consul.ProviderSet,
+	// grpc.ProviderSet,
+	// server.ProviderSet,
+	// client.ProviderSet,
+	// services.ProviderSet,
+	// repositories.ProviderSet,
 	appProvider,
 )
 
@@ -41,12 +39,14 @@ var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
 // Create http/grpc Serve
 func newServe(
 	hs *http.Server,
-	cli *consul.Client,
-	gs *grpc.Server,
+	// cli *consul.Client,
+	// gs *grpc.Server,
+	// CMD_SERVEPARAM 锚点请勿删除! Do not delete this line!
 ) ([]ginny.Serve, error) {
 	return []ginny.Serve{
 		ginny.HttpServe(hs),
-		ginny.GrpcServeWithConsul(gs, cli),
+		// ginny.GrpcServeWithConsul(gs, cli),
+		// CMD_SERVEFUNC 锚点请勿删除! Do not delete this line!
 	}, nil
 }
 
