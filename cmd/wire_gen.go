@@ -66,11 +66,6 @@ func CreateApp(name string) (*ginny.Application, error) {
 
 // provider.go:
 
-// providerSet
-var providerSet = wire.NewSet(log.ProviderSet, config.ProviderSet, jaeger.ProviderSet, handlers.ProviderSet, appProvider)
-
-var appProvider = wire.NewSet(newServe, ginny.AppProviderSet)
-
 // Create http/grpc Serve
 func newServe(
 	hs *http.Server,
@@ -78,3 +73,6 @@ func newServe(
 ) ([]ginny.Serve, error) {
 	return []ginny.Serve{ginny.HttpServe(hs)}, nil
 }
+
+// appProvider
+var appProvider = wire.NewSet(log.ProviderSet, config.ProviderSet, jaeger.ProviderSet, newServe, ginny.AppProviderSet)
