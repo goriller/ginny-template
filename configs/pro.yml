@@ -6,35 +6,63 @@ config:
   path:
   types: json
 http:
-  mode: release
+  mode: debug
   host: 127.0.0.1
   port: 9090
 grpc:
-  host: 127.0.0.1
+  host:
   port: 9000
 consul:
   address: ${consul_addr}
 jaeger:
   serviceName: test
   reporter:
-    localAgentHostPort: "jaeger-agent:6831"
+    localAgentHostPort: ${jaeger_agent}
   sampler:
     type: const
     param: 1
 log:
-  filename: ../logs/test.log
+  filename: ../logs/APP_NAME.log
   maxSize: 500
   maxBackups: 3
   maxAge: 3
-  level: "debug"
+  level: "info"
   stdout: false
-mysql:
-  db_name: test
-  wdb:
-    host: ${mysql_host}
-    user: ${mysql_user}
-    pass: ${mysql_pass}
-  rdbs:
-    - host: ${mysql_host}
-      user: ${mysql_user}
-      pass: ${mysql_pass}
+# mysql:
+#   db_name: test
+#   wdb:
+#     host: ${mysql_host}
+#     user: ${mysql_user}
+#     pass: ${mysql_pass}
+#   rdbs:
+#     - host: ${mysql_host}
+#       user: ${mysql_user}
+#       pass: ${mysql_pass}
+# redis:
+#   username:
+#   password: ${redis_pass}
+#   db: 0
+#   pool_size:
+#   standalone:
+#     standalone_addrs:
+#       - master: ${redis_host}
+#         slaves:
+#           - ${redis_host}
+#   sentinel:
+#     master_name:
+#     sentinel_addrs:
+#       - ${redis_host}
+#     sentinel_password:
+#   cluster:
+#     cluster_addrs:
+#       - ${redis_host}
+#     max_redirects:
+# mongo:
+#   default_dbname:
+#   hosts:
+#     - ${mongo_host}
+#   auth:
+#     username:
+#     password:
+#   max_pool_size:
+#   min_pool_size:
