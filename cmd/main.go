@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+
+	_ "go.uber.org/automaxprocs/maxprocs"
 )
 
 // config file

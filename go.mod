@@ -10,4 +10,5 @@ require (
 	github.com/gorillazer/ginny-jaeger v0.0.1
 	github.com/gorillazer/ginny-log v0.0.2
 	github.com/gorillazer/ginny-serve v0.0.13
+	go.uber.org/automaxprocs v1.4.0
 )
