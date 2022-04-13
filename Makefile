@@ -20,8 +20,19 @@ test: tidy mock
 #-------------------------------------	
 .PHONY: build
 build: tidy
-	GOOS=linux GOARCH="amd64" go build -o dist/$(APP)-linux-amd64 ./cmd/; \
-	GOOS=darwin GOARCH="amd64" go build -o dist/$(APP)-darwin-amd64 ./cmd/
+	GOARCH="amd64" go build -o dist/$(APP)-amd64 ./cmd/; \
+
+.PHONY: build_linux
+build_linux: tidy
+	GOOS=linux GOARCH="amd64" go build -o dist/${BINARY}-linux-amd64  ./cmd/
+
+.PHONY: build_darwin
+build_darwin: tidy
+	GOOS=darwin GOARCH="amd64" go build -o dist/${BINARY}-darwin-amd64 ./cmd/
+
+.PHONY: build_win
+build_win: tidy
+	GOOS=windows GOARCH="amd64" go build -o dist/${BINARY}-windows-amd64.exe ./cmd/
 #-------------------------------------	
 .PHONY: cover
 cover: test
