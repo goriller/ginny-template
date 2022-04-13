@@ -30,6 +30,7 @@ commit-msg = [
 "*.go" = [
   "goimports -l -w",
   "gofmt -l -w",
+  "go vet",
 ]
 
 # commit msg rule default support conventional commits
