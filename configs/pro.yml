@@ -1,62 +1,52 @@
 app:
   name: APP_NAME
+  Version: 0.0.1
+  GrpcAddr: :9000
+  HttpAddr: :8080
+
 config:
-  provider: #remote config provider: etcd、consul
-  endpoint:
-  path:
-  types: json
-http:
-  mode: debug
-  host: 127.0.0.1
-  port: 9090
-grpc:
-  host:
-  port: 9000
+  test: json
+
 consul:
   address: ${consul_addr}
+
 jaeger:
-  serviceName: APP_NAME
+  serviceName: test
   reporter:
-    localAgentHostPort: ${jaeger_agent}
+    localAgentHostPort: "jaeger-agent:6831"
   sampler:
     type: const
     param: 1
-log:
-  filename: ../logs/APP_NAME.log
-  maxSize: 500
-  maxBackups: 3
-  maxAge: 3
-  level: "info"
-  stdout: false
-# mysql:
-#   db_name: test
-#   wdb:
-#     host: ${mysql_host}
-#     user: ${mysql_user}
-#     pass: ${mysql_pass}
-#   rdbs:
-#     - host: ${mysql_host}
-#       user: ${mysql_user}
-#       pass: ${mysql_pass}
-# redis:
-#   username:
-#   password: ${redis_pass}
-#   db: 0
-#   pool_size:
-#   standalone:
-#     standalone_addrs:
-#       - master: ${redis_host}
-#         slaves:
-#           - ${redis_host}
-#   sentinel:
-#     master_name:
-#     sentinel_addrs:
-#       - ${redis_host}
-#     sentinel_password:
-#   cluster:
-#     cluster_addrs:
-#       - ${redis_host}
-#     max_redirects:
+
+mysql:
+  db_name: test
+  wdb:
+    host: ${mysql_host}
+    user: ${mysql_user}
+    pass: ${mysql_pass}
+  # rdbs:
+  #   - host: ${mysql_host}
+  #     user: ${mysql_user}
+  #     pass: ${mysql_pass}
+redis:
+  username:
+  password: ${redis_pass}
+  db: 0
+  pool_size:
+  standalone:
+    standalone_addrs:
+      - master: ${redis_host}
+        slaves:
+          - ${redis_host}
+  # sentinel:
+  #   master_name:
+  #   sentinel_addrs:
+  #     - ${redis_host}
+  #   sentinel_password:
+  # cluster:
+  #   cluster_addrs:
+  #     - ${redis_host}
+  #   max_redirects:
 # mongo:
 #   default_dbname:
 #   hosts:

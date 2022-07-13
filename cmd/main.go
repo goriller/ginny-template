@@ -1,25 +1,16 @@
 package main
 
 import (
-	"flag"
-
 	_ "go.uber.org/automaxprocs/maxprocs"
+	"go.uber.org/zap"
 )
 
-// config file
-var configFile = flag.String("f", "../configs/dev.yml", "set config file which viper will loading.")
-
 func main() {
-	flag.Parse()
-
-	app, err := CreateApp(*configFile)
+	app, err := NewApp()
 	if err != nil {
-		panic(err)
+		app.Logger.Fatal("NewApp", zap.Error(err))
 	}
-
 	if err := app.Start(); err != nil {
-		panic(err)
+		app.Logger.Fatal("Start", zap.Error(err))
 	}
-
-	app.AwaitSignal()
 }
