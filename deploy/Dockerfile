@@ -12,4 +12,4 @@ ADD ./dist/<appName>-linux-amd64 app
 ADD ./configs/pro.yml .
 ADD ./deploy/wait-for .
 
-# CMD ["./app", "-conf", "./pro.yml"]
+CMD ["./app", "-conf", "./pro.yml"]
