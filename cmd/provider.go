@@ -13,7 +13,6 @@ import (
 	"github.com/goriller/ginny"
 	"github.com/goriller/ginny/server"
 	// consul "github.com/goriller/ginny-consul"
-	// consulApi "github.com/hashicorp/consul/api"
 	// jaeger "github.com/goriller/ginny-jaeger"
 	// "github.com/opentracing/opentracing-go"
 )
@@ -33,10 +32,10 @@ func NewApp() (*ginny.Application, error) {
 }
 
 func serverOption(
-// consul *consulApi.Client,
+// consul *consul.Client,
 // tracer opentracing.Tracer,
 ) (opts []server.Option) {
+	// opts = append(opts, server.WithDiscover(consul))
 	// opts = append(opts, server.WithTracer(tracer))
-	// opts = append(opts, server.WithConsul(consul))
 	return
 }
