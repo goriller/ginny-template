@@ -9,6 +9,7 @@ import (
 	config2 "MODULE_NAME/internal/config"
 	"MODULE_NAME/internal/repo"
 	"MODULE_NAME/internal/service"
+	"context"
 	"github.com/goriller/ginny"
 	"github.com/goriller/ginny-mysql"
 	"github.com/goriller/ginny/config"
@@ -20,11 +21,10 @@ import (
 	_ "go.uber.org/automaxprocs/maxprocs"
 )
 
-// Injectors from provider.go:
+// Injectors from app.go:
 
 // NewApp
-func NewApp() (*ginny.Application, error) {
-	context := ginny.GetContext()
+func NewApp(ctx context.Context) (*ginny.Application, error) {
 	viper, err := config.NewConfig()
 	if err != nil {
 		return nil, err
@@ -42,22 +42,22 @@ func NewApp() (*ginny.Application, error) {
 	if err != nil {
 		return nil, err
 	}
-	sqlBuilder, err := mysql.NewSqlBuilder(context, mysqlConfig, zapLogger)
+	sqlBuilder, err := mysql.NewSqlBuilder(ctx, mysqlConfig, zapLogger)
 	if err != nil {
 		return nil, err
 	}
 	userRepo := repo.NewUserRepo(configConfig, sqlBuilder)
 	serviceService := service.NewService(configConfig, userRepo)
-	registrarFunc := service.RegisterService(context, serviceService)
+	registrarFunc := service.RegisterService(ctx, serviceService)
 	v := serverOption()
-	application, err := ginny.NewApp(context, option, zapLogger, registrarFunc, v...)
+	application, err := ginny.NewApp(ctx, option, zapLogger, registrarFunc, v...)
 	if err != nil {
 		return nil, err
 	}
 	return application, nil
 }
 
-// provider.go:
+// app.go:
 
 func serverOption() (opts []server.Option) {
 

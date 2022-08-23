@@ -1,16 +1,21 @@
 package main
 
 import (
+	"context"
+	"time"
+
+	"github.com/goriller/ginny/logger"
 	_ "go.uber.org/automaxprocs/maxprocs"
-	"go.uber.org/zap"
 )
 
 func main() {
-	app, err := NewApp()
+	ctx, cc := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cc()
+	app, err := NewApp(ctx)
 	if err != nil {
-		app.Logger.Fatal("NewApp", zap.Error(err))
+		logger.Action("NewApp").Fatal(err.Error())
 	}
 	if err := app.Start(); err != nil {
-		app.Logger.Fatal("Start", zap.Error(err))
+		logger.Action("Start").Fatal(err.Error())
 	}
 }

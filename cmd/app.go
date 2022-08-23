@@ -4,6 +4,8 @@
 package main
 
 import (
+	"context"
+
 	"MODULE_NAME/internal/config"
 	"MODULE_NAME/internal/logic"
 	"MODULE_NAME/internal/repo"
@@ -18,7 +20,7 @@ import (
 )
 
 // NewApp
-func NewApp() (*ginny.Application, error) {
+func NewApp(ctx context.Context) (*ginny.Application, error) {
 	panic(wire.Build(wire.NewSet(
 		// consul.ProviderSet,
 		// jaeger.ProviderSet,
