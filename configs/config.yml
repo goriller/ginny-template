@@ -1,5 +1,5 @@
 app:
-  name: APP_NAME
+  name: gdemo
   Version: 0.0.1
   GrpcAddr: :9000
   HttpAddr: :8080
@@ -13,7 +13,7 @@ consul:
 jaeger:
   serviceName: test
   reporter:
-    localAgentHostPort: "jaeger-agent:6831"
+    localAgentHostPort: ${jaeger-agent}
   sampler:
     type: const
     param: 1
