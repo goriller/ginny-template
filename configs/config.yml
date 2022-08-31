@@ -4,8 +4,7 @@ app:
   GrpcAddr: :9000
   HttpAddr: :8080
 
-config:
-  test: json
+test: json
 
 consul:
   address: ${consul_addr}
