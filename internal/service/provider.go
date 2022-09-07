@@ -9,7 +9,7 @@ import (
 
 	"github.com/google/wire"
 	"github.com/goriller/ginny"
-	"github.com/goriller/ginny/server/mux"
+	"github.com/goriller/ginny/errs"
 )
 
 // ProviderSet
@@ -28,7 +28,7 @@ func NewService(
 	config *config.Config,
 	userRepository *repo.UserRepo,
 ) *Service {
-	mux.RegisterErrorCodes(pb.ErrorCode_name)
+	errs.RegisterErrorCodes(pb.ErrorCode_name)
 	return &Service{
 		config:         config,
 		userRepository: userRepository,
