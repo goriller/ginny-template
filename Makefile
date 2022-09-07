@@ -21,8 +21,8 @@ test: tidy mock
 #-------------------------------------	
 .PHONY: build
 build: tidy
-	GOOS=linux GOARCH="amd64" go build -o dist/$(APP)-linux-amd64 ./cmd/; \
-	GOOS=darwin GOARCH="amd64" go build -o dist/$(APP)-darwin-amd64 ./cmd/
+	GOOS=linux GOARCH="amd64" go build -o dist/$(APP)-linux-amd64 ./cmd/; 
+#	GOOS=linux GOARCH="arm64" go build -o dist/$(APP)-linux-arm64 ./cmd/;
 #-------------------------------------	
 .PHONY: cover
 cover: test
