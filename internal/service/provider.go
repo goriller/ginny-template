@@ -39,7 +39,7 @@ func NewService(
 func RegisterService(ctx context.Context, sev *Service) ginny.RegistrarFunc {
 	return func(app *ginny.Application) error {
 		// 注册gRPC服务
-		app.Server.RegisterService(&pb.Say_ServiceDesc, sev)
+		app.Server.RegisterService(ctx, &pb.Say_ServiceDesc, sev)
 
 		if app.Option.HttpAddr != "" {
 			// 注册http服务

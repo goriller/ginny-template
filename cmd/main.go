@@ -15,7 +15,7 @@ func main() {
 	if err != nil {
 		logger.Action("NewApp").Fatal(err.Error())
 	}
-	if err := app.Start(); err != nil {
+	if err := app.Start(ctx); err != nil {
 		logger.Action("Start").Fatal(err.Error())
 	}
 }
