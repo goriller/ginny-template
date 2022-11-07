@@ -1,5 +1,5 @@
 app:
-  name: gdemo
+  Name: gdemo
   Version: 0.0.1
   GrpcAddr: :9000
   HttpAddr: :8080
