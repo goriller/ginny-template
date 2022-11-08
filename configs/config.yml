@@ -4,19 +4,23 @@ app:
   GrpcAddr: :9000
   HttpAddr: :8080
 
-test: json
+config:
+  test: json
 
 consul:
   address: ${consul_addr}
 
 jaeger:
-  serviceName: test
+  serviceName: ginny-demo
   reporter:
-    localAgentHostPort: ${jaeger-agent}
+    logSpans: true
+    localAgentHostPort: ${jaeger_agent}
   sampler:
     type: const
     param: 1
-
+broker:
+  dsn: ${broker_dsn}
+  topic: kafkatest
 mysql:
   db_name: test
   wdb:
@@ -28,10 +32,10 @@ mysql:
   #     user: ${mysql_user}
   #     pass: ${mysql_pass}
 redis:
-  username:
-  password: ${redis_pass}
   db: 0
   pool_size:
+  username:
+  password: ${redis_pass}
   standalone:
     standalone_addrs:
       - master: ${redis_host}

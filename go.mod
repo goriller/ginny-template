@@ -3,17 +3,17 @@ module MODULE_NAME
 go 1.19
 
 require (
-	github.com/envoyproxy/protoc-gen-validate v0.8.0
+	github.com/envoyproxy/protoc-gen-validate v0.6.8
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/google/wire v0.5.0
-	github.com/goriller/ginny v0.2.23
+	github.com/goriller/ginny v0.2.24
 	github.com/goriller/ginny-mysql v0.0.3
 	github.com/goriller/ginny-redis v0.0.3
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.13.0
-	github.com/spf13/viper v1.14.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.12.0
+	github.com/spf13/viper v1.13.0
 	go.uber.org/automaxprocs v1.5.1
 	go.uber.org/zap v1.23.0
-	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c
+	google.golang.org/genproto v0.0.0-20221025140454-527a21cfbd71
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
 )
@@ -23,7 +23,6 @@ require (
 	cloud.google.com/go/compute v1.12.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
 	cloud.google.com/go/firestore v1.8.0 // indirect
-	cloud.google.com/go/longrunning v0.1.1 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
