@@ -265,8 +265,8 @@ github.com/googleapis/gax-go/v2 v2.4.0/go.mod h1:XOTVJ59hdnfJLIP/dh8n5CGryZR2LxK
 github.com/googleapis/gax-go/v2 v2.7.0 h1:IcsPKeInNvYi7eqSaDjiZqDDKu5rsmunY0Y1YupQSSQ=
 github.com/googleapis/gax-go/v2 v2.7.0/go.mod h1:TEop28CZZQ2y+c0VxMUmu1lV+fQx57QpBWsYpwqHJx8=
 github.com/googleapis/google-cloud-go-testing v0.0.0-20200911160855-bcd43fbb19e8/go.mod h1:dvDLG8qkwmyD9a/MJJN3XJcT3xFxOKAvTZGvuZmac9g=
-github.com/goriller/ginny v0.2.26 h1:b8IsyIBTYfN9BFEG5NStsXMssejgIK2uggLag9NzYBI=
-github.com/goriller/ginny v0.2.26/go.mod h1:MmEyRBTlhPO1RdoWuGeXhx8YhP+0dDyj18g/w+Y6XD8=
+github.com/goriller/ginny v0.2.29 h1:urrsNQmgYOfcYEJp+uWz9Ya64mr++hwdWd5jaCKSDk8=
+github.com/goriller/ginny v0.2.29/go.mod h1:9n4dlC6QPrQiVp7P98h4uBeZV+FlBGN2qYcBm4OBKbc=
 github.com/goriller/ginny-mysql v0.0.3 h1:ViH6s7gcjeEwsQKflJqMsXtomM9Zb2QUEavV2QP2gdo=
 github.com/goriller/ginny-mysql v0.0.3/go.mod h1:PRLNfYVBnj9VekRCEL1w6O/zmp/y9wwnYaSm9B0zGG4=
 github.com/goriller/ginny-redis v0.0.3 h1:mrP8FNqwKPPSyDsLS5uoeJnP/iJKgiv3CDVNA8edMtU=
