@@ -1,4 +1,4 @@
-package repo
+package cache
 
 import (
 	"context"
@@ -9,13 +9,7 @@ import (
 )
 
 // RedisCacheProvider
-var RedisCacheProvider = wire.NewSet(NewRedisCache,
-	wire.Bind(new(IRedisCache), new(*RedisCache)))
-
-// IRedisCache
-type IRedisCache interface {
-	Ping(ctx context.Context) (string, error)
-}
+var RedisCacheProvider = wire.NewSet(NewRedisCache)
 
 // RedisCache
 type RedisCache struct {
@@ -25,10 +19,10 @@ type RedisCache struct {
 // NewRedisCache
 func NewRedisCache(
 	redis *gredis.Redis,
-) *RedisCache {
+) (*RedisCache, error) {
 	return &RedisCache{
 		redis: redis.Client(),
-	}
+	}, nil
 }
 
 // Ping

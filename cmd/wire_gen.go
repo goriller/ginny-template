@@ -6,12 +6,14 @@
 package main
 
 import (
-	config2 "MODULE_NAME/internal/config"
+	"MODULE_NAME/internal/cache"
 	"MODULE_NAME/internal/repo"
+	"MODULE_NAME/internal/repo/entity"
 	"MODULE_NAME/internal/service"
 	"context"
 	"github.com/goriller/ginny"
-	"github.com/goriller/ginny-mysql"
+	"github.com/goriller/ginny-gorm"
+	"github.com/goriller/ginny-redis"
 	"github.com/goriller/ginny/config"
 	"github.com/goriller/ginny/logger"
 	"github.com/goriller/ginny/server"
@@ -34,20 +36,38 @@ func NewApp(ctx context.Context) (*ginny.Application, error) {
 		return nil, err
 	}
 	zapLogger := logger.Default()
-	configConfig, err := config2.NewConfig(viper)
+	redisConfig, err := redis.NewConfig(viper)
 	if err != nil {
 		return nil, err
 	}
-	mysqlConfig, err := mysql.NewConfig(viper)
+	redisRedis, err := redis.NewRedis(ctx, redisConfig, zapLogger)
 	if err != nil {
 		return nil, err
 	}
-	sqlBuilder, err := mysql.NewSqlBuilder(ctx, mysqlConfig, zapLogger)
+	redisCache, err := cache.NewRedisCache(redisRedis)
 	if err != nil {
 		return nil, err
 	}
-	userRepo := repo.NewUserRepo(configConfig, sqlBuilder)
-	serviceService := service.NewService(configConfig, userRepo)
+	ormConfig, err := orm.NewConfig(viper, zapLogger)
+	if err != nil {
+		return nil, err
+	}
+	ormORM, err := orm.New(ctx, ormConfig, zapLogger)
+	if err != nil {
+		return nil, err
+	}
+	userEntity, err := entity.NewUserEntity()
+	if err != nil {
+		return nil, err
+	}
+	userRepo, err := repo.NewUserRepo(ormORM, userEntity)
+	if err != nil {
+		return nil, err
+	}
+	serviceService, err := service.NewService(redisCache, userRepo)
+	if err != nil {
+		return nil, err
+	}
 	registrarFunc := service.RegisterService(ctx, serviceService)
 	v := serverOption()
 	application, err := ginny.NewApp(ctx, option, zapLogger, registrarFunc, v...)

@@ -20,7 +20,7 @@ test: tidy mock
 	go test -v ./internal/... -f `pwd`/configs/$(CONF) -covermode=count -coverprofile=dist/cover-$(APP).out
 #-------------------------------------	
 .PHONY: build
-build: tidy
+build: tidy wire
 	GOOS=linux GOARCH="amd64" go build -o dist/$(APP)-linux-amd64 ./cmd/; 
 #	GOOS=linux GOARCH="arm64" go build -o dist/$(APP)-linux-arm64 ./cmd/;
 #-------------------------------------	

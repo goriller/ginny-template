@@ -3,6 +3,7 @@ app:
   Version: 0.0.1
   GrpcAddr: :9000
   HttpAddr: :8080
+  MetricsAddr: :8081
 
 config:
   test: json
@@ -21,16 +22,11 @@ jaeger:
 broker:
   dsn: ${broker_dsn}
   topic: kafkatest
-mysql:
-  db_name: test
-  wdb:
-    host: ${mysql_host}
-    user: ${mysql_user}
-    pass: ${mysql_pass}
-  # rdbs:
-  #   - host: ${mysql_host}
-  #     user: ${mysql_user}
-  #     pass: ${mysql_pass}
+gorm:
+  # [user[:password]@][net[(addr)]]/dbname[?param1=value1&paramN=valueN]
+  wdb: ${mysql_dsn}
+  rdbs:
+    - ${mysql_dsn}
 redis:
   db: 0
   pool_size:

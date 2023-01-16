@@ -4,7 +4,7 @@ import (
 	"context"
 
 	pb "MODULE_NAME/api/proto"
-	"MODULE_NAME/internal/config"
+	"MODULE_NAME/internal/cache"
 	"MODULE_NAME/internal/repo"
 
 	"github.com/google/wire"
@@ -13,31 +13,36 @@ import (
 )
 
 // ProviderSet
-var ProviderSet = wire.NewSet(NewService, RegisterService)
+var ProviderSet = wire.NewSet(
+	cache.ProviderSet,
+	NewService,
+	RegisterService,
+)
 
 // Service the instance for grpc proto.
 type Service struct {
 	pb.UnimplementedSayServer
-	config *config.Config
 	// Introduce new dependencies here, exp:
+	cache          *cache.RedisCache
 	userRepository *repo.UserRepo
 }
 
 // NewService new service that implement hello
 func NewService(
-	config *config.Config,
+	cache *cache.RedisCache,
 	userRepository *repo.UserRepo,
-) *Service {
-	errs.RegisterErrorCodes(pb.ErrorCode_name)
+) (*Service, error) {
 	return &Service{
-		config:         config,
+		cache:          cache,
 		userRepository: userRepository,
-	}
+	}, nil
 }
 
 // RegisterService
 func RegisterService(ctx context.Context, sev *Service) ginny.RegistrarFunc {
 	return func(app *ginny.Application) error {
+		// 注入错误码
+		errs.RegisterErrorCodes(pb.ErrorCode_name)
 		// 注册gRPC服务
 		app.Server.RegisterService(ctx, &pb.Say_ServiceDesc, sev)
 

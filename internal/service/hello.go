@@ -33,6 +33,11 @@ func (s *Service) Hello(ctx context.Context, req *pb.Request) (*pb.Response, err
 	// Demo: 自定义日志字段
 	log.With(zap.String("custom2", "test2")).Info("xxx")
 
+	// m := sync.Map{}
+	// m.Range(func(key, value interface{}) bool {
+	// 	return true
+	// })
+
 	// 返回结果
 	return &pb.Response{
 		Msg: fmt.Sprintf("hello %s ", req.Name),

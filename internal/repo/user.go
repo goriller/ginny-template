@@ -2,66 +2,121 @@ package repo
 
 import (
 	"context"
+	"errors"
+	"strings"
 
-	"MODULE_NAME/internal/config"
 	"MODULE_NAME/internal/repo/entity"
 
 	"github.com/google/wire"
-	mysql "github.com/goriller/ginny-mysql"
-	"github.com/goriller/ginny/logger"
-	"go.uber.org/zap"
-	// mongo "github.com/goriller/ginny-mongo"
-	// redis "github.com/goriller/ginny-redis"
+	orm "github.com/goriller/ginny-gorm"
+	"github.com/goriller/ginny-util/validation"
+	"gorm.io/gorm"
 	// DATABASE_LIB 锚点请勿删除! Do not delete this line!
 )
 
 // UserRepoProvider
-var UserRepoProvider = wire.NewSet(NewUserRepo,
-	wire.Bind(new(IUserRepo), new(*UserRepo)))
-
-// IUserRepo
-type IUserRepo interface {
-	GetUser(ctx context.Context) (*entity.UserEntity, error)
-}
+var UserRepoProvider = wire.NewSet(NewUserRepo)
 
 // UserRepo
 type UserRepo struct {
-	config *config.Config
-	// redis *redis.Manager
-	mysql *mysql.SqlBuilder
+	orm *orm.ORM
 	// mongo *mongo.Manager
+	entity *entity.UserEntity
 	// STRUCT_ATTR 锚点请勿删除! Do not delete this line!
 }
 
 // NewUserRepo
 func NewUserRepo(
-	config *config.Config,
 	// redis *redis.Manager,
-	mysql *mysql.SqlBuilder,
+	orm *orm.ORM,
+	userEntity *entity.UserEntity,
 	// mongo *mongo.Manager,
 	// FUNC_PARAM 锚点请勿删除! Do not delete this line!
-) *UserRepo {
+) (*UserRepo, error) {
 	return &UserRepo{
-		config: config,
-		// redis: redis,
-		mysql: mysql,
-		// mongo: mongo,
+		orm:    orm,
+		entity: userEntity,
 		// FUNC_ATTR 锚点请勿删除! Do not delete this line!
-	}
+	}, nil
 }
 
-func (p *UserRepo) GetUser(ctx context.Context) (*entity.UserEntity, error) {
-	r := &entity.UserEntity{}
-	log := logger.WithContext(ctx).With(zap.String("action", "GetUser"))
-	// if err := p.mysql.Find(ctx, r, r.TableName(), nil); err != nil {
-	// 	log.Error("", zap.Error(err))
-	// 	return nil, err
-	// }
+// Count
+func (p *UserRepo) Count(ctx context.Context, where entity.UserEntity) (total int64, err error) {
+	err = p.orm.RDB().Table(p.entity.TableName()).Where(where).Count(&total).Error
+	return
+}
 
-	// if _, err := p.mongo.Database.Collection(r.TableName()).Find(ctx, nil); err != nil {
-	// 	return nil, err
-	// }
-	// p.redis.DB().Get(ctx, r.TableName()).Result()
-	log.Debug("GetUser")
-	return r, nil
+// Find
+func (p *UserRepo) Find(ctx context.Context, where entity.UserEntity, order []string) (
+	result *entity.UserEntity, err error) {
+	if order == nil {
+		order = []string{"id desc"}
+	}
+	err = p.orm.RDB().Table(p.entity.TableName()).Where(where).Order(strings.Join(order, ",")).First(result).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	return
+}
+
+// FindAll
+func (p *UserRepo) FindAll(ctx context.Context, where entity.UserEntity,
+	order []string, opt ...int) (result []entity.UserEntity, err error) {
+	if order == nil {
+		order = []string{"id desc"}
+	}
+	db := p.orm.RDB().Table(p.entity.TableName()).Where(where).Order(strings.Join(order, ","))
+	var (
+		limit  = 1000
+		offset = 0
+	)
+	if len(opt) > 0 {
+		limit = opt[0]
+	}
+	db = db.Limit(limit)
+	if len(opt) == 2 {
+		offset = opt[1]
+	}
+	db = db.Offset(offset)
+	err = db.Find(&result).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	return
+}
+
+// Insert
+func (p *UserRepo) Insert(ctx context.Context,
+	entity *entity.UserEntity) (int64, error) {
+	if err := validation.Validate(entity); err != nil {
+		return 0, err
+	}
+	result := p.orm.RDB().Table(p.entity.TableName()).Create(entity)
+	return entity.Id, result.Error
+}
+
+// Update
+func (p *UserRepo) Update(ctx context.Context, where entity.UserEntity,
+	update entity.UserEntity) (int64, error) {
+	if err := validation.Validate(update); err != nil {
+		return 0, err
+	}
+	result := p.orm.RDB().Table(p.entity.TableName()).Where(where).Updates(update)
+	return result.RowsAffected, result.Error
+}
+
+// Delete
+func (p *UserRepo) Delete(ctx context.Context,
+	where entity.UserEntity) (int64, error) {
+	var t *entity.UserEntity
+	result := p.orm.RDB().Table(p.entity.TableName()).Where(where).Delete(t)
+	return result.RowsAffected, result.Error
+}
+
+// PDelete physical deletion
+func (p *UserRepo) PDelete(ctx context.Context,
+	where entity.UserEntity) (int64, error) {
+	var t *entity.UserEntity
+	result := p.orm.RDB().Table(p.entity.TableName()).Unscoped().Where(where).Delete(t)
+	return result.RowsAffected, result.Error
 }
