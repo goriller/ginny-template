@@ -11,10 +11,16 @@
             "mode": "auto",
             "program": "${workspaceFolder}/cmd",
             "env": {
-                "redis_host": "redis://:xxx@127.0.0.1:6379/0",
-                "mongo_host": "mongodb://xxxx:xxxx@127.0.0.1:27017/test?authSource=admin",
+                "redis_host": "127.0.0.1:6379",
+                "redis_db": "0",
+                "redis_pass": "",
+                "mongo_default_db": "default_dbname",
+                "mongo_host": "127.0.0.1:27017",
+                "mongo_username": "xxxx",
+                "mongo_password": "xxxx",
                 "consul_addr": "127.0.0.1:8500",
                 "jaeger-agent": "127.0.0.1:6831",
+                "broker_dsn": "kafka://127.0.0.1:9011",
                 "mysql_dsn": "root:123456@tcp(127.0.0.1:3306)/dbname?charset=utf8&parseTime=true&loc=Local",
             },
             "args": [

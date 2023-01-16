@@ -21,14 +21,13 @@ jaeger:
     param: 1
 broker:
   dsn: ${broker_dsn}
-  topic: kafkatest
 gorm:
   # [user[:password]@][net[(addr)]]/dbname[?param1=value1&paramN=valueN]
   wdb: ${mysql_dsn}
   rdbs:
     - ${mysql_dsn}
 redis:
-  db: 0
+  db: ${redis_db}
   pool_size:
   username:
   password: ${redis_pass}
