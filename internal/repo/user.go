@@ -41,18 +41,26 @@ func NewUserRepo(
 }
 
 // Count
-func (p *UserRepo) Count(ctx context.Context, where entity.UserEntity) (total int64, err error) {
-	err = p.orm.RDB().Table(p.entity.TableName()).Where(where).Count(&total).Error
+func (p *UserRepo) Count(ctx context.Context, where Query) (total int64, err error) {
+	db := p.orm.RDB().Table(p.entity.TableName())
+	if where.QueryStr != "" && where.Attrs != nil {
+		db = db.Where(where.QueryStr, where.Attrs...)
+	}
+	err = db.Count(&total).Error
 	return
 }
 
 // Find
-func (p *UserRepo) Find(ctx context.Context, where entity.UserEntity, order []string) (
+func (p *UserRepo) Find(ctx any, where Query, order []string) (
 	result *entity.UserEntity, err error) {
 	if order == nil {
 		order = []string{"id desc"}
 	}
-	err = p.orm.RDB().Table(p.entity.TableName()).Where(where).Order(strings.Join(order, ",")).First(result).Error
+	db := p.orm.RDB().Table(p.entity.TableName())
+	if where.QueryStr != "" && where.Attrs != nil {
+		db = db.Where(where.QueryStr, where.Attrs...)
+	}
+	err = db.Order(strings.Join(order, ",")).First(&result).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}
@@ -60,12 +68,16 @@ func (p *UserRepo) Find(ctx context.Context, where entity.UserEntity, order []st
 }
 
 // FindAll
-func (p *UserRepo) FindAll(ctx context.Context, where entity.UserEntity,
+func (p *UserRepo) FindAll(ctx context.Context, where Query,
 	order []string, opt ...int) (result []entity.UserEntity, err error) {
 	if order == nil {
 		order = []string{"id desc"}
 	}
-	db := p.orm.RDB().Table(p.entity.TableName()).Where(where).Order(strings.Join(order, ","))
+	db := p.orm.RDB().Table(p.entity.TableName())
+	if where.QueryStr != "" && where.Attrs != nil {
+		db = db.Where(where.QueryStr, where.Attrs...)
+	}
+	db = db.Order(strings.Join(order, ","))
 	var (
 		limit  = 1000
 		offset = 0
@@ -96,27 +108,39 @@ func (p *UserRepo) Insert(ctx context.Context,
 }
 
 // Update
-func (p *UserRepo) Update(ctx context.Context, where entity.UserEntity,
+func (p *UserRepo) Update(ctx context.Context, where Query,
 	update entity.UserEntity) (int64, error) {
 	if err := validation.Validate(update); err != nil {
 		return 0, err
 	}
-	result := p.orm.RDB().Table(p.entity.TableName()).Where(where).Updates(update)
+	db := p.orm.RDB().Table(p.entity.TableName())
+	if where.QueryStr != "" && where.Attrs != nil {
+		db = db.Where(where.QueryStr, where.Attrs...)
+	}
+	result := db.Updates(update)
 	return result.RowsAffected, result.Error
 }
 
 // Delete
 func (p *UserRepo) Delete(ctx context.Context,
-	where entity.UserEntity) (int64, error) {
+	where Query) (int64, error) {
 	var t *entity.UserEntity
-	result := p.orm.RDB().Table(p.entity.TableName()).Where(where).Delete(t)
+	db := p.orm.RDB().Table(p.entity.TableName())
+	if where.QueryStr != "" && where.Attrs != nil {
+		db = db.Where(where.QueryStr, where.Attrs...)
+	}
+	result := db.Delete(t)
 	return result.RowsAffected, result.Error
 }
 
 // PDelete physical deletion
 func (p *UserRepo) PDelete(ctx context.Context,
-	where entity.UserEntity) (int64, error) {
+	where Query) (int64, error) {
 	var t *entity.UserEntity
-	result := p.orm.RDB().Table(p.entity.TableName()).Unscoped().Where(where).Delete(t)
+	db := p.orm.RDB().Table(p.entity.TableName())
+	if where.QueryStr != "" && where.Attrs != nil {
+		db = db.Where(where.QueryStr, where.Attrs...)
+	}
+	result := db.Unscoped().Delete(t)
 	return result.RowsAffected, result.Error
 }

@@ -7,7 +7,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/google/wire v0.5.0
 	github.com/goriller/ginny v0.2.30
-	github.com/goriller/ginny-gorm v0.0.0-20230114032908-76539223ffcb
+	github.com/goriller/ginny-gorm v0.0.0-20230117061724-caaff6421af2
 	github.com/goriller/ginny-redis v0.0.3
 	github.com/goriller/ginny-util/validation v0.0.0-20230114041301-95e122fbc104
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.0

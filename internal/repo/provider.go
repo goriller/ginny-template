@@ -8,6 +8,12 @@ import (
 	// DATABASE_LIB 锚点请勿删除! Do not delete this line!
 )
 
+// Query
+type Query struct {
+	QueryStr string
+	Attrs    []interface{}
+}
+
 var ProviderSet = wire.NewSet(
 	gorm.Provider,
 	// mongo.Provider,

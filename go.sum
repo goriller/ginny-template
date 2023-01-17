@@ -315,8 +315,8 @@ github.com/gorilla/sessions v1.2.1/go.mod h1:dk2InVEVJ0sfLlnXv9EAgkf6ecYs/i80K/z
 github.com/gorilla/websocket v1.4.1/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/goriller/ginny v0.2.30 h1:+ChWN+JOD6SOzh1ZNmSLovtNB4tW977Ha6iXFoR/5nY=
 github.com/goriller/ginny v0.2.30/go.mod h1:cYeoRXbql7Yccn3mvNmoqNkt8cU1WHqrEq4+pw2wmYo=
-github.com/goriller/ginny-gorm v0.0.0-20230114032908-76539223ffcb h1:G6s02SYG4gaZbTWfyi1U0v3ugYFyAqqon0HzOe4rzRU=
-github.com/goriller/ginny-gorm v0.0.0-20230114032908-76539223ffcb/go.mod h1:yEUQrn5R6HqplNTV3mr0jN16Ps+d2O5FXiJ8za7wOwo=
+github.com/goriller/ginny-gorm v0.0.0-20230117061724-caaff6421af2 h1:Iu1tRzWLDWGHFCGbeKPtg8oHuiPMqvHB5TBFxzJfdmw=
+github.com/goriller/ginny-gorm v0.0.0-20230117061724-caaff6421af2/go.mod h1:yEUQrn5R6HqplNTV3mr0jN16Ps+d2O5FXiJ8za7wOwo=
 github.com/goriller/ginny-redis v0.0.3 h1:mrP8FNqwKPPSyDsLS5uoeJnP/iJKgiv3CDVNA8edMtU=
 github.com/goriller/ginny-redis v0.0.3/go.mod h1:5jv7lc0ldrj1CfljHWFUCYQDSwO1Ak0yAP9z40X+gHw=
 github.com/goriller/ginny-util/graceful v0.0.0-20220709134815-ff6d5a5ef0dd/go.mod h1:ePHs6ATwfdeS6OnkHP+1rJfGfNRyfDSAfDwtf6yqPMg=

@@ -22,6 +22,7 @@ jaeger:
 broker:
   dsn: ${broker_dsn}
 gorm:
+  type: mysql
   # [user[:password]@][net[(addr)]]/dbname[?param1=value1&paramN=valueN]
   wdb: ${mysql_dsn}
   rdbs:
