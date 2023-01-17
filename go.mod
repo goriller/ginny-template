@@ -8,9 +8,11 @@ require (
 	github.com/google/wire v0.5.0
 	github.com/goriller/ginny v0.2.30
 	github.com/goriller/ginny-gorm v0.0.0-20230117061724-caaff6421af2
+	github.com/goriller/ginny-jaeger v0.0.7
 	github.com/goriller/ginny-redis v0.0.3
 	github.com/goriller/ginny-util/validation v0.0.0-20230114041301-95e122fbc104
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.0
+	github.com/opentracing/opentracing-go v1.2.0
 	github.com/spf13/viper v1.14.0
 	go.uber.org/automaxprocs v1.5.1
 	go.uber.org/zap v1.24.0
@@ -85,7 +87,6 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/paulmach/orb v0.7.1 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
@@ -103,6 +104,8 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
+	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
+	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	go.etcd.io/etcd/api/v3 v3.5.5 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.5 // indirect
 	go.etcd.io/etcd/client/v2 v2.305.5 // indirect
