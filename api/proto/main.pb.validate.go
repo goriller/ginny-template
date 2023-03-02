@@ -56,20 +56,22 @@ func (m *Request) validate(all bool) error {
 
 	var errors []error
 
-	if len(m.GetName()) > 32 {
+	if utf8.RuneCountInString(m.GetName()) != 32 {
 		err := RequestValidationError{
 			field:  "Name",
-			reason: "value length must be at most 32 bytes",
+			reason: "value length must be 32 runes",
 		}
 		if !all {
 			return err
 		}
 		errors = append(errors, err)
+
 	}
 
 	if len(errors) > 0 {
 		return RequestMultiError(errors)
 	}
+
 	return nil
 }
 
@@ -170,6 +172,7 @@ func (m *Response) validate(all bool) error {
 	if len(errors) > 0 {
 		return ResponseMultiError(errors)
 	}
+
 	return nil
 }
 

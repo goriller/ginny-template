@@ -22,7 +22,7 @@ service Say {
 // Hello 请求
 message Request {
   // 姓名
-  string name = 1 [ (validate.rules).string = {max_bytes : 32} ];
+  string name = 1 [ (validate.rules).string = {len : 32} ];
 }
 
 // Hello 响应
