@@ -4,8 +4,12 @@
 
 # 发布时根据情况修改
 APP = APP_NAME
-CONF ?= dev.yml
+CONF ?= config.yml
+ARCH ?= amd64
 PROTO_IMG = ginny/protoc:latest
+
+REPO         ?= docker.io
+IMG_REPO     := $(REPO)/$(APP)
 #-------------------------------------	
 .PHONY: run
 run: tidy proto wire
@@ -24,9 +28,13 @@ test: tidy mock
 	go test -v ./internal/... -f `pwd`/configs/$(CONF) -covermode=count -coverprofile=dist/cover-$(APP).out
 #-------------------------------------	
 .PHONY: build
-build: tidy
-	GOOS=linux GOARCH="amd64" go build -o dist/$(APP)-linux-amd64 ./cmd/;
-#	GOOS=linux GOARCH="arm64" go build -o dist/$(APP)-linux-arm64 ./cmd/;
+build: tidy wire
+	GOOS=linux GOARCH="amd64" go build -o dist/$(APP)-$(ARCH) ./cmd/;
+#	GOOS=linux GOARCH="arm64" go build -o dist/$(APP)-$(ARCH) ./cmd/;
+#-------------------------------------	
+.PHONY: img
+img: build
+	docker buildx build -f ./deploy/Dockerfile -t $(IMG_REPO):$(IMG_VERSION) .
 #-------------------------------------	
 .PHONY: cover
 cover: test
