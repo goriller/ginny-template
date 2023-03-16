@@ -29,8 +29,8 @@ test: tidy mock
 #-------------------------------------	
 .PHONY: build
 build: tidy wire
-	GOOS=linux GOARCH="amd64" go build -o dist/$(APP)-$(ARCH) ./cmd/;
-#	GOOS=linux GOARCH="arm64" go build -o dist/$(APP)-$(ARCH) ./cmd/;
+	GOOS=linux GOARCH="amd64" go build -o dist/$(APP)-$(ARCH).bin ./cmd/;
+#	GOOS=linux GOARCH="arm64" go build -o dist/$(APP)-$(ARCH).bin ./cmd/;
 #-------------------------------------	
 .PHONY: img
 img: build

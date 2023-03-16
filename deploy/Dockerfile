@@ -14,8 +14,8 @@ ENV LOG_PATH=logs/log.log
 ENV LOG_LEVEL=info
 ENV PRE_STOP="80s"
 
-ADD ./dist/<appName>-linux-amd64 app
+ADD ./dist/*.bin app
 ADD ./configs/config.yml /data/
-ADD ./deploy/wait-for /data/
 
 CMD ["/data/app", "-conf", "./config.yml"]
+
