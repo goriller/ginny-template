@@ -5,10 +5,11 @@
 # 发布时根据情况修改
 APP = APP_NAME
 CONF ?= config.yml
+# amd64 arm64
 ARCH ?= amd64
 PROTO_IMG = ginny/protoc:latest
 
-REPO         ?= docker.io
+REPO         = docker.io/username
 IMG_REPO     := $(REPO)/$(APP)
 #-------------------------------------	
 .PHONY: run
@@ -29,8 +30,7 @@ test: tidy mock
 #-------------------------------------	
 .PHONY: build
 build: tidy wire
-	GOOS=linux GOARCH="amd64" go build -o dist/$(APP)-$(ARCH).bin ./cmd/;
-#	GOOS=linux GOARCH="arm64" go build -o dist/$(APP)-$(ARCH).bin ./cmd/;
+	GOOS=linux GOARCH=$(ARCH) go build -o "dist/$(APP)-$(ARCH).bin" ./cmd/;
 #-------------------------------------	
 .PHONY: img
 img: build
