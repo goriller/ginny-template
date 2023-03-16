@@ -56,4 +56,4 @@ protoc:
 # .PHONY: docker
 # docker-compose: build dash rules
 # 	docker-compose -f deploy/docker-compose.yml up --build -d
-all: lint cover
+all: lint cover test
