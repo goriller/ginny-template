@@ -326,8 +326,8 @@ github.com/gorilla/securecookie v1.1.1/go.mod h1:ra0sb63/xPlUeL+yeDciTfxMRAA+MP+
 github.com/gorilla/sessions v1.2.1/go.mod h1:dk2InVEVJ0sfLlnXv9EAgkf6ecYs/i80K/zI+bUmuGM=
 github.com/gorilla/websocket v1.4.1/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/goriller/ginny v0.2.12/go.mod h1:K6xWqzTw1FxqKoYbZjqTQvqkDGXvJmKsGJd5mNnf9EI=
-github.com/goriller/ginny v0.3.0 h1:OqOwZx7CpZ+F/6HqRrnEiS79efWOehcWX/OAfQ2a4fU=
-github.com/goriller/ginny v0.3.0/go.mod h1:UAy722mCctLnthPZuChed8v4+zXpgAjQptjJl2DH5uA=
+github.com/goriller/ginny v0.3.2 h1:nTCKmDp2gdcl6KyYpyPg1R3bALBxN1AJIwSV42pEn/Q=
+github.com/goriller/ginny v0.3.2/go.mod h1:3nw9T5fBFtfnh0vmMgUdd5OZmoyBOErM/m1OgnZz67s=
 github.com/goriller/ginny-gorm v0.0.0-20230201062048-52fe8c439472 h1:POSelX0iFNkQP1Sp3iz/OEP0b29qnIYVx+P8+Mwb66E=
 github.com/goriller/ginny-gorm v0.0.0-20230201062048-52fe8c439472/go.mod h1:RWlWO7jfm8mrqEKrtUfSVJqEU+YNhiPt9tS7CWQHq1I=
 github.com/goriller/ginny-jaeger v0.0.7 h1:nwgxITI5EJ2VL5Iwk5pm+Q1kOm2mt8Ce2xCNw9zV18c=

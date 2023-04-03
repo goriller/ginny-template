@@ -6,7 +6,7 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v0.9.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/google/wire v0.5.0
-	github.com/goriller/ginny v0.3.0
+	github.com/goriller/ginny v0.3.2
 	github.com/goriller/ginny-gorm v0.0.0-20230201062048-52fe8c439472
 	github.com/goriller/ginny-jaeger v0.0.7
 	github.com/goriller/ginny-redis v0.0.3
