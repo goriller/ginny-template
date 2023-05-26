@@ -9,7 +9,6 @@ package main
 import (
 	"MODULE_NAME/internal/cache"
 	"MODULE_NAME/internal/repo"
-	"MODULE_NAME/internal/repo/entity"
 	"MODULE_NAME/internal/service"
 	"context"
 	"github.com/goriller/ginny"
@@ -55,15 +54,11 @@ func NewApp(ctx context.Context) (*ginny.Application, error) {
 	if err != nil {
 		return nil, err
 	}
-	ormORM, err := orm.New(ctx, ormConfig, zapLogger)
+	db, err := orm.New(ctx, ormConfig)
 	if err != nil {
 		return nil, err
 	}
-	userEntity, err := entity.NewUserEntity()
-	if err != nil {
-		return nil, err
-	}
-	userRepo, err := repo.NewUserRepo(ormORM, userEntity)
+	userRepo, err := repo.NewUserRepo(db)
 	if err != nil {
 		return nil, err
 	}

@@ -23,8 +23,8 @@ broker:
   dsn: ${broker_dsn}
 gorm:
   # mysql://localhost:3306/dbname[?username=value1&password=value2&paramN=valueN]
-  wdb: ${mysql_dsn}
-  rdbs:
+  master: ${mysql_dsn}
+  replicas:
     - ${mysql_dsn}
 redis:
   db: ${redis_db}

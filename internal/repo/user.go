@@ -8,18 +8,35 @@ import (
 	"MODULE_NAME/internal/repo/entity"
 
 	"github.com/google/wire"
-	orm "github.com/goriller/ginny-gorm"
 	"github.com/goriller/ginny-util/validation"
 	"gorm.io/gorm"
 	// DATABASE_LIB 锚点请勿删除! Do not delete this line!
 )
 
 // UserRepoProvider
-var UserRepoProvider = wire.NewSet(NewUserRepo)
+var UserRepoProvider = wire.NewSet(NewUserRepo,
+	wire.Bind(new(IUserRepo), new(*UserRepo)))
+
+// IUserRepo
+type IUserRepo interface {
+	Count(ctx context.Context, where entity.UserEntity) (total int64, err error)
+	Find(ctx context.Context, where entity.UserEntity, order []string) (
+		result *entity.UserEntity, err error)
+	FindAll(ctx context.Context, where entity.UserEntity,
+		order []string, opt ...int) (result []entity.UserEntity, err error)
+	Insert(ctx context.Context,
+		entity *entity.UserEntity) (int64, error)
+	Update(ctx context.Context, where entity.UserEntity,
+		update entity.UserEntity) (int64, error)
+	Delete(ctx context.Context,
+		where entity.UserEntity) (int64, error)
+	PDelete(ctx context.Context,
+		where entity.UserEntity) (int64, error)
+}
 
 // UserRepo
 type UserRepo struct {
-	orm *orm.ORM
+	orm *gorm.DB
 	// mongo *mongo.Manager
 	entity *entity.UserEntity
 	// STRUCT_ATTR 锚点请勿删除! Do not delete this line!
@@ -28,39 +45,34 @@ type UserRepo struct {
 // NewUserRepo
 func NewUserRepo(
 	// redis *redis.Manager,
-	orm *orm.ORM,
-	userEntity *entity.UserEntity,
+	orm *gorm.DB,
 	// mongo *mongo.Manager,
 	// FUNC_PARAM 锚点请勿删除! Do not delete this line!
 ) (*UserRepo, error) {
 	return &UserRepo{
 		orm:    orm,
-		entity: userEntity,
+		entity: &entity.UserEntity{},
 		// FUNC_ATTR 锚点请勿删除! Do not delete this line!
 	}, nil
 }
 
 // Count
-func (p *UserRepo) Count(ctx context.Context, where Query) (total int64, err error) {
-	db := p.orm.RDB().Table(p.entity.TableName())
-	if where.QueryStr != "" && where.Attrs != nil {
-		db = db.Where(where.QueryStr, where.Attrs...)
-	}
-	err = db.Count(&total).Error
+func (p *UserRepo) Count(ctx context.Context, where entity.UserEntity) (total int64, err error) {
+	err = p.orm.Table(p.entity.TableName()).Where(where).Count(&total).Error
 	return
 }
 
 // Find
-func (p *UserRepo) Find(ctx any, where Query, order []string) (
+/** 注意:
+ * where条件仅可以使用非零值
+ * order的字段名需要同数据库字段名一致
+ */
+func (p *UserRepo) Find(ctx context.Context, where entity.UserEntity, order []string) (
 	result *entity.UserEntity, err error) {
 	if order == nil {
 		order = []string{"id desc"}
 	}
-	db := p.orm.RDB().Table(p.entity.TableName())
-	if where.QueryStr != "" && where.Attrs != nil {
-		db = db.Where(where.QueryStr, where.Attrs...)
-	}
-	err = db.Order(strings.Join(order, ",")).First(&result).Error
+	err = p.orm.Table(p.entity.TableName()).Where(where).Order(strings.Join(order, ",")).First(&result).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}
@@ -68,16 +80,16 @@ func (p *UserRepo) Find(ctx any, where Query, order []string) (
 }
 
 // FindAll
-func (p *UserRepo) FindAll(ctx context.Context, where Query,
+/** 注意:
+ * where条件仅可以使用非零值
+ * order的字段名需要同数据库字段名一致
+ */
+func (p *UserRepo) FindAll(ctx context.Context, where entity.UserEntity,
 	order []string, opt ...int) (result []entity.UserEntity, err error) {
 	if order == nil {
 		order = []string{"id desc"}
 	}
-	db := p.orm.RDB().Table(p.entity.TableName())
-	if where.QueryStr != "" && where.Attrs != nil {
-		db = db.Where(where.QueryStr, where.Attrs...)
-	}
-	db = db.Order(strings.Join(order, ","))
+	db := p.orm.Table(p.entity.TableName()).Where(where).Order(strings.Join(order, ","))
 	var (
 		limit  = 1000
 		offset = 0
@@ -103,44 +115,41 @@ func (p *UserRepo) Insert(ctx context.Context,
 	if err := validation.Validate(entity); err != nil {
 		return 0, err
 	}
-	result := p.orm.RDB().Table(p.entity.TableName()).Create(entity)
+	result := p.orm.Table(p.entity.TableName()).Create(entity)
 	return entity.Id, result.Error
 }
 
 // Update
-func (p *UserRepo) Update(ctx context.Context, where Query,
+/** 注意:
+ * where、update仅可以使用非零值
+ */
+func (p *UserRepo) Update(ctx context.Context, where entity.UserEntity,
 	update entity.UserEntity) (int64, error) {
 	if err := validation.Validate(update); err != nil {
 		return 0, err
 	}
-	db := p.orm.RDB().Table(p.entity.TableName())
-	if where.QueryStr != "" && where.Attrs != nil {
-		db = db.Where(where.QueryStr, where.Attrs...)
-	}
-	result := db.Updates(update)
+	result := p.orm.Table(p.entity.TableName()).Where(where).Updates(update)
 	return result.RowsAffected, result.Error
 }
 
 // Delete
+/** 注意:
+ * where条件仅可以使用非零值
+ */
 func (p *UserRepo) Delete(ctx context.Context,
-	where Query) (int64, error) {
+	where entity.UserEntity) (int64, error) {
 	var t *entity.UserEntity
-	db := p.orm.RDB().Table(p.entity.TableName())
-	if where.QueryStr != "" && where.Attrs != nil {
-		db = db.Where(where.QueryStr, where.Attrs...)
-	}
-	result := db.Delete(t)
+	result := p.orm.Table(p.entity.TableName()).Where(where).Delete(&t)
 	return result.RowsAffected, result.Error
 }
 
 // PDelete physical deletion
+/** 注意:
+ * where条件仅可以使用非零值
+ */
 func (p *UserRepo) PDelete(ctx context.Context,
-	where Query) (int64, error) {
+	where entity.UserEntity) (int64, error) {
 	var t *entity.UserEntity
-	db := p.orm.RDB().Table(p.entity.TableName())
-	if where.QueryStr != "" && where.Attrs != nil {
-		db = db.Where(where.QueryStr, where.Attrs...)
-	}
-	result := db.Unscoped().Delete(t)
+	result := p.orm.Table(p.entity.TableName()).Unscoped().Where(where).Delete(&t)
 	return result.RowsAffected, result.Error
 }
