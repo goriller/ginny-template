@@ -14,8 +14,8 @@ ENV LOG_PATH=logs/log.log
 ENV LOG_LEVEL=info
 ENV PRE_STOP="80s"
 
-ADD ./dist/*.bin app
-ADD ./configs/config.yml /data/
+ADD ./deploy/app.bin app.bin
+ADD ./configs/config.yml config.yml
 
-CMD ["/data/app", "-conf", "./config.yml"]
+CMD ["/data/app.bin", "-conf", "./config.yml"]
 

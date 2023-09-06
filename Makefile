@@ -7,7 +7,7 @@ APP = APP_NAME
 CONF ?= config.yml
 # amd64 arm64
 ARCH ?= amd64
-PROTO_IMG = ginny/protoc:latest
+PROTO_IMG = richenlin/ginny:latest
 
 REPO         = docker.io/username
 IMG_REPO     := $(REPO)/$(APP)
@@ -30,7 +30,7 @@ test: tidy mock
 #-------------------------------------	
 .PHONY: build
 build: tidy wire
-	GOOS=linux GOARCH=$(ARCH) go build -o "dist/$(APP)-$(ARCH).bin" ./cmd/;
+	GOOS=linux GOARCH=$(ARCH) go build -o "deploy/app.bin" ./cmd/;
 #-------------------------------------	
 .PHONY: img
 img: build
