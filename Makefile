@@ -13,7 +13,7 @@ REPO         = docker.io/username
 IMG_REPO     := $(REPO)/$(APP)
 #-------------------------------------	
 .PHONY: run
-run: tidy proto wire
+run: tidy protoc wire
 	go run ./cmd/ -f configs/$(CONF)  & \
 #-------------------------------------	
 .PHONY: tidy
