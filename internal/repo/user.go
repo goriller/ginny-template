@@ -9,6 +9,7 @@ import (
 
 	"github.com/google/wire"
 	"github.com/goriller/ginny-util/validation"
+	"github.com/goriller/gorm-plus/gplus"
 	"gorm.io/gorm"
 	// DATABASE_LIB 锚点请勿删除! Do not delete this line!
 )
@@ -32,6 +33,8 @@ type IUserRepo interface {
 		where entity.UserEntity) (int64, error)
 	PDelete(ctx context.Context,
 		where entity.UserEntity) (int64, error)
+	SelectPage(ctx context.Context, query *gplus.QueryCond[entity.UserEntity],
+		limit, offset int) (*gplus.Page[entity.UserEntity], error)
 }
 
 // UserRepo
@@ -39,6 +42,8 @@ type UserRepo struct {
 	orm *gorm.DB
 	// mongo *mongo.Manager
 	entity *entity.UserEntity
+
+	gplus.Dao[entity.UserEntity]
 	// STRUCT_ATTR 锚点请勿删除! Do not delete this line!
 }
 
@@ -89,6 +94,7 @@ func (p *UserRepo) FindAll(ctx context.Context, where entity.UserEntity,
 	if order == nil {
 		order = []string{"id desc"}
 	}
+
 	db := p.orm.Table(p.entity.TableName()).Where(where).Order(strings.Join(order, ","))
 	var (
 		limit  = 1000
@@ -107,6 +113,20 @@ func (p *UserRepo) FindAll(ctx context.Context, where entity.UserEntity,
 		return nil, nil
 	}
 	return
+}
+
+func (p *UserRepo) SelectPage(ctx context.Context, query *gplus.QueryCond[entity.UserEntity],
+	offset, limit int) (*gplus.Page[entity.UserEntity], error) {
+	page := gplus.NewPage[entity.UserEntity](offset, limit)
+
+	page, resultDb := gplus.SelectPage(page, query)
+	if resultDb.Error != nil {
+		if errors.Is(resultDb.Error, gorm.ErrRecordNotFound) {
+			return page, nil
+		}
+		return nil, resultDb.Error
+	}
+	return page, nil
 }
 
 // Insert
